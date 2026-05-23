@@ -744,98 +744,98 @@
                 <div class="logo-title">一键登录</div>
                 <div class="account-list-container">
                     <div class="account-list">
-                        <div class="account-item" onclick="selectAccount('user1')">
+                        <div class="account-item" onclick="selectAccount('user1', event)">
                             <div class="account-icon">U</div>
                             <div class="account-info">
                                 <div class="account-name">用户A</div>
                                 <div class="account-email">userA@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user2')">
+                        <div class="account-item" onclick="selectAccount('user2', event)">
                             <div class="account-icon">T</div>
                             <div class="account-info">
                                 <div class="account-name">测试账号</div>
                                 <div class="account-email">test@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user3')">
+                        <div class="account-item" onclick="selectAccount('user3', event)">
                             <div class="account-icon">A</div>
                             <div class="account-info">
                                 <div class="account-name">管理员</div>
                                 <div class="account-email">admin@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user4')">
+                        <div class="account-item" onclick="selectAccount('user4', event)">
                             <div class="account-icon">D</div>
                             <div class="account-info">
                                 <div class="account-name">开发者</div>
                                 <div class="account-email">dev@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user5')">
+                        <div class="account-item" onclick="selectAccount('user5', event)">
                             <div class="account-icon">V</div>
                             <div class="account-info">
                                 <div class="account-name">访客账号</div>
                                 <div class="account-email">visitor@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user6')">
+                        <div class="account-item" onclick="selectAccount('user6', event)">
                             <div class="account-icon">E</div>
                             <div class="account-info">
                                 <div class="account-name">员工账号</div>
                                 <div class="account-email">employee@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user7')">
+                        <div class="account-item" onclick="selectAccount('user7', event)">
                             <div class="account-icon">S</div>
                             <div class="account-info">
                                 <div class="account-name">学生账号</div>
                                 <div class="account-email">student@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user8')">
+                        <div class="account-item" onclick="selectAccount('user8', event)">
                             <div class="account-icon">G</div>
                             <div class="account-info">
                                 <div class="account-name">Guest</div>
                                 <div class="account-email">guest@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user9')">
+                        <div class="account-item" onclick="selectAccount('user9', event)">
                             <div class="account-icon">M</div>
                             <div class="account-info">
                                 <div class="account-name">会员账号</div>
                                 <div class="account-email">member@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user10')">
+                        <div class="account-item" onclick="selectAccount('user10', event)">
                             <div class="account-icon">P</div>
                             <div class="account-info">
                                 <div class="account-name">VIP账号</div>
                                 <div class="account-email">vip@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user11')">
+                        <div class="account-item" onclick="selectAccount('user11', event)">
                             <div class="account-icon">W</div>
                             <div class="account-info">
                                 <div class="account-name">网站管理员</div>
                                 <div class="account-email">webmaster@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user12')">
+                        <div class="account-item" onclick="selectAccount('user12', event)">
                             <div class="account-icon">O</div>
                             <div class="account-info">
                                 <div class="account-name">运营账号</div>
                                 <div class="account-email">operation@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user13')">
+                        <div class="account-item" onclick="selectAccount('user13', event)">
                             <div class="account-icon">C</div>
                             <div class="account-info">
                                 <div class="account-name">客服账号</div>
                                 <div class="account-email">customer@example.com</div>
                             </div>
                         </div>
-                        <div class="account-item" onclick="selectAccount('user14')">
+                        <div class="account-item" onclick="selectAccount('user14', event)">
                             <div class="account-icon">Q</div>
                             <div class="account-info">
                                 <div class="account-name">测试员</div>
@@ -936,7 +936,7 @@
             updateThemeButtons(currentTheme);
         }
 
-        function selectAccount(accountId) {
+        function selectAccount(accountId, event) {
             const items = document.querySelectorAll('.account-item');
             items.forEach(item => item.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
