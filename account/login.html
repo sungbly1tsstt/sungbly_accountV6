@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUNGBLY ACCOUNT V6 - 登录</title>
+    <style>
+        :root {
+            --bg-gradient-start: #e3f2fd;
+            --bg-gradient-end: #e1f5fe;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
+            --primary-color: #1976D2;
+            --primary-light: rgba(25, 118, 210, 0.15);
+            --primary-hover: #1565C0;
+            --text-color: #333;
+            --text-light: #666;
+            --input-bg: rgba(255, 255, 255, 0.6);
+            --link-btn-bg: rgba(255, 255, 255, 0.5);
+            --scrollbar-track: rgba(255, 255, 255, 0.3);
+            --scrollbar-thumb: rgba(25, 118, 210, 0.3);
+            --scrollbar-thumb-hover: rgba(25, 118, 210, 0.5);
+        }
+
+        .theme-blue {
+            --bg-gradient-start: #e3f2fd;
+            --bg-gradient-end: #e1f5fe;
+            --primary-color: #1976D2;
+            --primary-light: rgba(25, 118, 210, 0.15);
+            --primary-hover: #1565C0;
+            --scrollbar-track: rgba(255, 255, 255, 0.3);
+            --scrollbar-thumb: rgba(25, 118, 210, 0.3);
+            --scrollbar-thumb-hover: rgba(25, 118, 210, 0.5);
+        }
+
+        .theme-purple {
+            --bg-gradient-start: #e8eaf6;
+            --bg-gradient-end: #f3e5f5;
+            --primary-color: #7E57C2;
+            --primary-light: rgba(126, 87, 194, 0.15);
+            --primary-hover: #6A4BBF;
+            --scrollbar-track: rgba(255, 255, 255, 0.3);
+            --scrollbar-thumb: rgba(126, 87, 194, 0.3);
+            --scrollbar-thumb-hover: rgba(126, 87, 194, 0.5);
+        }
+
+        .theme-green {
+            --bg-gradient-start: #e8f5e9;
+            --bg-gradient-end: #e0f7fa;
+            --primary-color: #388E3C;
+            --primary-light: rgba(56, 142, 60, 0.15);
+            --primary-hover: #2E7D32;
+            --scrollbar-track: rgba(255, 255, 255, 0.3);
+            --scrollbar-thumb: rgba(56, 142, 60, 0.3);
+            --scrollbar-thumb-hover: rgba(56, 142, 60, 0.5);
+        }
+
+        .theme-dark-blue {
+            --bg-gradient-start: #0d1b2a;
+            --bg-gradient-end: #1b263b;
+            --glass-bg: rgba(20, 30, 48, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --primary-color: #64b5f6;
+            --primary-light: rgba(100, 181, 246, 0.2);
+            --primary-hover: #42a5f5;
+            --text-color: #e0e0e0;
+            --text-light: #a0a0a0;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --link-btn-bg: rgba(255, 255, 255, 0.1);
+            --scrollbar-track: rgba(255, 255, 255, 0.05);
+            --scrollbar-thumb: rgba(100, 181, 246, 0.3);
+            --scrollbar-thumb-hover: rgba(100, 181, 246, 0.5);
+        }
+
+        .theme-dark-purple {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --glass-bg: rgba(30, 30, 50, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --primary-color: #bb86fc;
+            --primary-light: rgba(187, 134, 252, 0.2);
+            --primary-hover: #9a67ea;
+            --text-color: #e0e0e0;
+            --text-light: #a0a0a0;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --link-btn-bg: rgba(255, 255, 255, 0.1);
+            --scrollbar-track: rgba(255, 255, 255, 0.05);
+            --scrollbar-thumb: rgba(187, 134, 252, 0.3);
+            --scrollbar-thumb-hover: rgba(187, 134, 252, 0.5);
+        }
+
+        .theme-dark-green {
+            --bg-gradient-start: #1b2a1b;
+            --bg-gradient-end: #2d3b2d;
+            --glass-bg: rgba(35, 50, 35, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --primary-color: #81c784;
+            --primary-light: rgba(129, 199, 132, 0.2);
+            --primary-hover: #66bb6a;
+            --text-color: #e0e0e0;
+            --text-light: #a0a0a0;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --link-btn-bg: rgba(255, 255, 255, 0.1);
+            --scrollbar-track: rgba(255, 255, 255, 0.05);
+            --scrollbar-thumb: rgba(129, 199, 132, 0.3);
+            --scrollbar-thumb-hover: rgba(129, 199, 132, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .color-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 8px;
+            box-shadow: 0 8px 24px var(--glass-shadow);
+            display: flex;
+            gap: 8px;
+            overflow: hidden;
+            width: 48px;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .color-switcher:hover,
+        .color-switcher.expanded {
+            width: 260px;
+        }
+
+        .color-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 12px;
+            border: 2px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            position: relative;
+            background: var(--input-bg);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-btn.selected {
+            transform: scale(1.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            border-width: 2px;
+        }
+
+        @keyframes selectPulse {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .color-btn.blue { background: linear-gradient(135deg, #e3f2fd, #e1f5fe); border-color: #1976D2; }
+        .color-btn.blue.selected { border-color: #1976D2; }
+        .color-btn.purple { background: linear-gradient(135deg, #e8eaf6, #f3e5f5); border-color: #7E57C2; }
+        .color-btn.purple.selected { border-color: #7E57C2; }
+        .color-btn.green { background: linear-gradient(135deg, #e8f5e9, #e0f7fa); border-color: #388E3C; }
+        .color-btn.green.selected { border-color: #388E3C; }
+        .color-btn.dark-blue { background: linear-gradient(135deg, #0d1b2a, #1b263b); border-color: #64b5f6; }
+        .color-btn.dark-blue.selected { border-color: #64b5f6; }
+        .color-btn.dark-purple { background: linear-gradient(135deg, #1a1a2e, #16213e); border-color: #bb86fc; }
+        .color-btn.dark-purple.selected { border-color: #bb86fc; }
+        .color-btn.dark-green { background: linear-gradient(135deg, #1b2a1b, #2d3b2d); border-color: #81c784; }
+        .color-btn.dark-green.selected { border-color: #81c784; }
+
+        .login-container {
+            display: flex;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 900px;
+            height: 500px;
+            box-shadow: 
+                0 25px 50px var(--glass-shadow),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .left-panel {
+            width: 35%;
+            padding: 40px 30px;
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .app-info {
+            flex: 1;
+        }
+
+        .login-to {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .app-id {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 20px 0;
+        }
+
+        .section-title {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .section-content {
+            font-size: 14px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .permissions {
+            min-height: 60px;
+        }
+
+        .legal {
+            font-size: 11px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .legal-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .legal-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .legal-links a:hover {
+            text-decoration: underline;
+        }
+
+        .right-panel {
+            width: 65%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quick-mode {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .account-list-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-bottom: 15px;
+            min-height: 0;
+        }
+
+        .logo-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            flex-shrink: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            font-size: 14px;
+            color: var(--text-color);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+
+        .turnstile-container {
+            margin: 18px 0;
+            padding: 15px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .turnstile-placeholder {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            flex-shrink: 0;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .quick-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .quick-btn-group .btn {
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+        }
+
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            flex-shrink: 0;
+        }
+
+        .bottom-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .bottom-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .link-btn {
+            font-size: 13px;
+            color: var(--text-color);
+            background: var(--link-btn-bg);
+            border: 1px solid transparent;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 12px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .link-btn:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .link-btn i {
+            margin-left: 4px;
+        }
+
+        .account-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .account-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .account-item:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .account-item.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .account-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-right: 14px;
+        }
+
+        .account-info {
+            flex: 1;
+        }
+
+        .account-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .account-email {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .add-account {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background: var(--input-bg);
+            border: 2px dashed var(--glass-border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .add-account:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .add-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .account-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .account-list-container::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .account-list-container::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .account-list-container::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn.loading {
+            pointer-events: none;
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        .btn.loading .btn-spinner {
+            display: inline-block;
+        }
+
+        .btn-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .timeout-notification {
+            position: fixed;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 16px var(--glass-shadow);
+            z-index: 1000;
+            transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeout-notification.show {
+            top: 16px;
+        }
+
+        .timeout-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timeout-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--primary-color);
+        }
+
+        .timeout-message {
+            font-size: 13px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1100px) {
+            .login-container {
+                width: 95%;
+                max-width: 600px;
+                flex-direction: column;
+                height: auto;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .left-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .right-panel {
+                width: 100%;
+            }
+
+            .bottom-bar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .bottom-left {
+                order: 2;
+            }
+
+            .bottom-right {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body class="theme-blue">
+    <div class="color-switcher" id="colorSwitcher">
+        <div class="color-btn blue" onclick="setTheme('blue')" title="浅蓝配色"></div>
+        <div class="color-btn purple" onclick="setTheme('purple')" title="浅紫配色"></div>
+        <div class="color-btn green" onclick="setTheme('green')" title="浅绿配色"></div>
+        <div class="color-btn dark-blue" onclick="setTheme('dark-blue')" title="深蓝配色"></div>
+        <div class="color-btn dark-purple" onclick="setTheme('dark-purple')" title="深紫配色"></div>
+        <div class="color-btn dark-green" onclick="setTheme('dark-green')" title="深绿配色"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="left-panel">
+            <div class="app-info">
+                <div class="login-to">登录到</div>
+                <div class="app-id">APP_ID_001</div>
+                
+                <div class="divider"></div>
+                
+                <div class="section-title">介绍</div>
+                <div class="section-content">这是一个测试应用，用于演示登录系统的功能和界面设计。</div>
+                
+                <div class="divider"></div>
+                
+                <div class="section-title">权限</div>
+                <div class="section-content permissions"></div>
+            </div>
+            
+            <div class="legal">
+                <div class="legal-links">
+                    <a href="#">服务协议</a>
+                    <a href="#">隐私政策</a>
+                </div>
+                <div>Copyright &copy; 2023-2026 sungbly_tsstt. All rights reserved. <br>您正在登录的服务由第三方提供，sungbly_tsstt不为该服务担保和负责。</div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div id="login-form" class="form-mode">
+                <div class="logo-title">SUNGBLY ACCOUNT V6</div>
+                
+                <div class="form-group">
+                    <label for="account">账号/注册邮箱</label>
+                    <input type="text" id="account" placeholder="请输入账号或邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="请输入密码">
+                </div>
+                
+                <div class="turnstile-container">
+                    <div class="turnstile-placeholder">Cloudflare Turnstile 验证码区域</div>
+                </div>
+                
+                <button class="btn" id="login-btn">
+                        <span class="btn-text">登录</span>
+                        <span class="btn-spinner"></span>
+                    </button>
+            </div>
+
+            <div id="quick-login-form" class="quick-mode hidden">
+                <div class="logo-title">一键登录</div>
+                <div class="account-list-container">
+                    <div class="account-list">
+                        <div class="account-item" onclick="selectAccount('user1')">
+                            <div class="account-icon">U</div>
+                            <div class="account-info">
+                                <div class="account-name">用户A</div>
+                                <div class="account-email">userA@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user2')">
+                            <div class="account-icon">T</div>
+                            <div class="account-info">
+                                <div class="account-name">测试账号</div>
+                                <div class="account-email">test@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user3')">
+                            <div class="account-icon">A</div>
+                            <div class="account-info">
+                                <div class="account-name">管理员</div>
+                                <div class="account-email">admin@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user4')">
+                            <div class="account-icon">D</div>
+                            <div class="account-info">
+                                <div class="account-name">开发者</div>
+                                <div class="account-email">dev@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user5')">
+                            <div class="account-icon">V</div>
+                            <div class="account-info">
+                                <div class="account-name">访客账号</div>
+                                <div class="account-email">visitor@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user6')">
+                            <div class="account-icon">E</div>
+                            <div class="account-info">
+                                <div class="account-name">员工账号</div>
+                                <div class="account-email">employee@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user7')">
+                            <div class="account-icon">S</div>
+                            <div class="account-info">
+                                <div class="account-name">学生账号</div>
+                                <div class="account-email">student@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user8')">
+                            <div class="account-icon">G</div>
+                            <div class="account-info">
+                                <div class="account-name">Guest</div>
+                                <div class="account-email">guest@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user9')">
+                            <div class="account-icon">M</div>
+                            <div class="account-info">
+                                <div class="account-name">会员账号</div>
+                                <div class="account-email">member@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user10')">
+                            <div class="account-icon">P</div>
+                            <div class="account-info">
+                                <div class="account-name">VIP账号</div>
+                                <div class="account-email">vip@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user11')">
+                            <div class="account-icon">W</div>
+                            <div class="account-info">
+                                <div class="account-name">网站管理员</div>
+                                <div class="account-email">webmaster@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user12')">
+                            <div class="account-icon">O</div>
+                            <div class="account-info">
+                                <div class="account-name">运营账号</div>
+                                <div class="account-email">operation@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user13')">
+                            <div class="account-icon">C</div>
+                            <div class="account-info">
+                                <div class="account-name">客服账号</div>
+                                <div class="account-email">customer@example.com</div>
+                            </div>
+                        </div>
+                        <div class="account-item" onclick="selectAccount('user14')">
+                            <div class="account-icon">Q</div>
+                            <div class="account-info">
+                                <div class="account-name">测试员</div>
+                                <div class="account-email">qa@example.com</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="add-account" onclick="addAccount()">
+                    <div class="add-icon">+</div>
+                </div>
+                
+                <div class="quick-btn-group">
+                    <button class="btn" id="quick-login-btn">
+                        <span class="btn-text">登录</span>
+                        <span class="btn-spinner"></span>
+                    </button>
+                    <button class="btn btn-secondary" id="cancel-btn">取消</button>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="bottom-left">
+                    <button class="link-btn" id="feedback-btn">反馈</button>
+                    <button class="link-btn" id="quick-login-toggle">一键登录</button>
+                </div>
+                <div class="bottom-right">
+                    <a href="register.html" class="link-btn">没有账号？注册<i>→</i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeout-notification" id="timeoutNotification">
+        <div class="timeout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        </div>
+        <div class="timeout-message">连接超时</div>
+    </div>
+
+    <script>
+        let currentTheme = 'blue';
+
+        function setTheme(theme) {
+            document.body.className = `theme-${theme}`;
+            currentTheme = theme;
+            saveThemeToCookie(theme);
+            updateThemeButtons(theme);
+        }
+
+        function updateThemeButtons(activeTheme) {
+            const colorSwitcher = document.getElementById('colorSwitcher');
+            const buttons = colorSwitcher.querySelectorAll('.color-btn');
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            const activeBtn = document.querySelector(`.color-btn.${activeTheme}`);
+            if (activeBtn) {
+                activeBtn.classList.add('selected');
+                colorSwitcher.insertBefore(activeBtn, colorSwitcher.firstChild);
+            }
+        }
+
+        function saveThemeToCookie(theme) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (365 * 24 * 60 * 60 * 1000));
+            document.cookie = `sungbly_theme=${theme};expires=${expires.toUTCString()};path=/`;
+        }
+
+        function getThemeFromCookie() {
+            const name = 'sungbly_theme=';
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return '';
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = getThemeFromCookie();
+            if (savedTheme) {
+                document.body.className = `theme-${savedTheme}`;
+                currentTheme = savedTheme;
+            }
+            updateThemeButtons(currentTheme);
+        }
+
+        function selectAccount(accountId) {
+            const items = document.querySelectorAll('.account-item');
+            items.forEach(item => item.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function addAccount() {
+            alert('添加新账号功能');
+        }
+
+        const quickLoginToggle = document.getElementById('quick-login-toggle');
+        const loginForm = document.getElementById('login-form');
+        const quickLoginForm = document.getElementById('quick-login-form');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const feedbackBtn = document.getElementById('feedback-btn');
+        const colorSwitcher = document.getElementById('colorSwitcher');
+
+        let isExpanded = false;
+
+        colorSwitcher.addEventListener('click', function() {
+            if (window.innerWidth <= 1100) {
+                isExpanded = !isExpanded;
+                if (isExpanded) {
+                    this.classList.add('expanded');
+                } else {
+                    this.classList.remove('expanded');
+                }
+            }
+        });
+
+        quickLoginToggle.addEventListener('click', () => {
+            loginForm.classList.add('hidden');
+            quickLoginForm.classList.remove('hidden');
+            quickLoginToggle.style.display = 'none';
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            quickLoginForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            quickLoginToggle.style.display = 'inline-block';
+        });
+
+        feedbackBtn.addEventListener('click', () => {
+            alert('反馈功能');
+        });
+
+        const loginBtn = document.getElementById('login-btn');
+        const quickLoginBtn = document.getElementById('quick-login-btn');
+        const timeoutNotification = document.getElementById('timeoutNotification');
+
+        let timeoutTimer = null;
+
+        function showLoading(btn) {
+            btn.classList.add('loading');
+        }
+
+        function hideLoading(btn) {
+            btn.classList.remove('loading');
+        }
+
+        function showTimeoutNotification() {
+            timeoutNotification.classList.add('show');
+            setTimeout(() => {
+                timeoutNotification.classList.remove('show');
+            }, 5000);
+        }
+
+        function handleLoginClick(btn) {
+            if (timeoutTimer) {
+                clearTimeout(timeoutTimer);
+            }
+            
+            showLoading(btn);
+            
+            timeoutTimer = setTimeout(() => {
+                showTimeoutNotification();
+                setTimeout(() => {
+                    hideLoading(btn);
+                }, 400);
+            }, 15000);
+        }
+
+        loginBtn.addEventListener('click', () => {
+            handleLoginClick(loginBtn);
+        });
+
+        quickLoginBtn.addEventListener('click', () => {
+            handleLoginClick(quickLoginBtn);
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1100) {
+                colorSwitcher.classList.remove('expanded');
+                isExpanded = false;
+            }
+        });
+
+        window.addEventListener('load', function() {
+            loadSavedTheme();
+        });
+    </script>
+</body>
+</html>
