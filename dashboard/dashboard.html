@@ -834,7 +834,7 @@
             align-items: center;
             gap: 10px;
             box-shadow: 0 4px 16px var(--glass-shadow);
-            z-index: 10000;
+            z-index: 10002;
             transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 14px;
             color: var(--text-primary);
@@ -1966,6 +1966,11 @@
 
             currentIndex = newIndex;
             currentPanel = newPanelLetter;
+
+            // ✅ 如果切换到账户面板，加载用户信息
+            if (targetId === 'account') {
+                await loadUserInfo();
+            }
 
             await sleep(50);
             isAnimating = false;
