@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录验证 - SUNGBLY ACCOUNT V6</title>
+    <style>
+        :root {
+            --bg-color: #e3f2fd;
+            --primary-color: #1976D2;
+            --text-primary: #333;
+            --text-secondary: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(25, 118, 210, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            display: none;
+        }
+
+        .success-icon.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner" id="spinner"></div>
+        <svg class="success-icon" id="successIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#10b981"/>
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="white"/>
+        </svg>
+        <div class="title" id="title">验证中...</div>
+        <div class="subtitle" id="subtitle">正在处理您的登录请求</div>
+    </div>
+
+    <script>
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function setCookie(name, value, days = 30) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+
+        async function processLogin() {
+            const certParam = getUrlParam('cert');
+            
+            if (!certParam) {
+                document.getElementById('title').textContent = '错误';
+                document.getElementById('subtitle').textContent = '未找到证书参数';
+                document.getElementById('spinner').style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 2000);
+                return;
+            }
+
+            try {
+                const certText = decodeURIComponent(escape(atob(certParam)));
+                const cert = JSON.parse(certText);
+
+                if (cert.more && cert.more.controlToken) {
+                    setCookie('controlKey', cert.more.controlToken, 7);
+                    
+                    if (cert.more.email) {
+                        setCookie('userEmail', cert.more.email, 7);
+                    }
+                    
+                    document.getElementById('spinner').style.display = 'none';
+                    document.getElementById('successIcon').classList.add('show');
+                    document.getElementById('title').textContent = '验证成功';
+                    document.getElementById('subtitle').textContent = '即将跳转到主页...';
+
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1500);
+                } else {
+                    document.getElementById('title').textContent = '错误';
+                    document.getElementById('subtitle').textContent = '证书中未找到 controlToken';
+                    document.getElementById('spinner').style.display = 'none';
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error processing certificate:', error);
+                document.getElementById('title').textContent = '错误';
+                document.getElementById('subtitle').textContent = '证书解析失败';
+                document.getElementById('spinner').style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 2000);
+            }
+        }
+
+        window.onload = processLogin;
+    </script>
+</body>
+</html>

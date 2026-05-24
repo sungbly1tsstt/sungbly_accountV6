@@ -474,11 +474,14 @@
         }
 
         .turnstile-status.processing .turnstile-status-icon {
-            background: rgba(59, 130, 246, 0.2);
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
         }
 
         .turnstile-status.processing .turnstile-status-icon svg {
-            stroke: #3b82f6;
+            display: none;
         }
 
         .turnstile-status.processing .icon-check,
@@ -487,7 +490,7 @@
         }
 
         .turnstile-status.processing .icon-spinner {
-            display: block;
+            display: none;
         }
 
         .turnstile-status.pending .turnstile-status-icon {
@@ -1736,6 +1739,7 @@
 
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
+                    showTurnstileStatus('processing', '正在进行人机验证');
                 }, 600);
             }, 800);
         });
