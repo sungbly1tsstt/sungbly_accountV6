@@ -400,8 +400,6 @@
         .turnstile-status {
             display: none;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
             font-size: 14px;
             color: var(--text-color);
             padding: 10px 20px;
@@ -409,6 +407,10 @@
 
         .turnstile-status.visible {
             display: flex;
+        }
+
+        .turnstile-status.processing {
+            justify-content: flex-start;
         }
 
         .turnstile-status-icon {
@@ -420,6 +422,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            margin-right: 10px;
         }
 
         .turnstile-status-icon svg {
@@ -1488,7 +1491,7 @@
           }
 
           if (!turnstileToken) {
-            showNotification('请完成验证码');
+            showTurnstileStatus('processing', '正在进行人机验证');
             hideLoading(document.getElementById('login-btn'));
             return;
           }
