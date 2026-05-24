@@ -109,6 +109,27 @@
             box-sizing: border-box;
         }
 
+        /* 全局滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
@@ -206,6 +227,7 @@
             flex-direction: column;
             gap: 8px;
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .sidebar::-webkit-scrollbar {
@@ -324,10 +346,29 @@
             box-shadow: 0 8px 24px var(--glass-shadow);
             padding: 32px;
             overflow-y: auto;
+            overflow-x: hidden;
             transform: scale(1) translateY(0);
             opacity: 1;
             pointer-events: none;
             z-index: 1;
+        }
+
+        .content-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-panel::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
         }
 
         .content-panel.active {
@@ -565,13 +606,14 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 32px;
+            padding: 0;
             box-shadow: 0 12px 40px var(--glass-shadow);
             z-index: 9999;
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             min-width: 400px;
             max-width: 90vw;
+            overflow: hidden;
         }
 
         .dialog-box.active {
@@ -584,10 +626,33 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 20px;
+            padding: 32px 32px 0;
         }
 
         .dialog-content {
             margin-bottom: 24px;
+            max-height: 50vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 32px;
+        }
+
+        .dialog-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dialog-content::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .dialog-content::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .dialog-content::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
         }
 
         .dialog-input {
@@ -617,6 +682,8 @@
             display: flex;
             gap: 12px;
             justify-content: flex-end;
+            padding: 0 32px 32px;
+            overflow: visible;
         }
 
         .dialog-btn {
@@ -833,7 +900,7 @@
             display: none;
             align-items: center;
             font-size: 14px;
-            color: var(--text-color);
+            color: var(--text-primary);
             padding: 10px 20px;
         }
 
@@ -927,7 +994,7 @@
 
         .turnstile-placeholder {
             font-size: 12px;
-            color: var(--text-light);
+            color: var(--text-secondary);
         }
 
         @keyframes spin {
@@ -1028,6 +1095,657 @@
             .content-panel {
                 min-height: 300px;
             }
+        }
+
+        .app-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .app-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .app-list-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .app-register-btn {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .app-register-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .app-show-list-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 16px;
+        }
+
+        .app-show-list-btn:hover {
+            background: var(--glass-border);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .app-card {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px var(--glass-shadow);
+        }
+
+        .app-card-left {
+            flex: 1;
+        }
+
+        .app-card-id {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-all;
+        }
+
+        .app-card-right {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .app-card-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .app-card-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .app-card-btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .app-card-btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .app-card-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .app-card-btn-secondary {
+            background: var(--glass-border);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .app-card-btn-secondary:hover {
+            background: rgba(107, 114, 128, 0.2);
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--glass-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-color);
+        }
+
+        .toggle-switch-handle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active .toggle-switch-handle {
+            left: 22px;
+        }
+
+        .detail-item {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .detail-value {
+            color: var(--text-secondary);
+            word-break: break-all;
+            font-size: 14px;
+        }
+
+        .detail-code {
+            background: var(--input-bg);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-primary);
+            word-break: break-all;
+            border: 1px solid var(--glass-border);
+        }
+
+        .tag-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tag-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .tag-list-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tag-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tag-register-btn,
+        .tag-add-user-btn {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tag-register-btn:hover,
+        .tag-add-user-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .tag-show-list-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 16px;
+        }
+
+        .tag-show-list-btn:hover {
+            background: var(--glass-border);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tag-card {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tag-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px var(--glass-shadow);
+        }
+
+        .tag-card-left {
+            flex: 1;
+        }
+
+        .tag-card-id {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tag-card-right {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .tag-card-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .tag-card-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tag-card-btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .tag-card-btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .tag-card-btn-secondary:hover {
+            background: var(--glass-border);
+        }
+
+        .tag-card-btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .tag-card-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .tag-card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .tag-card-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .tag-card-status.inactive::before {
+            background: #ef4444;
+        }
+
+        .tag-card-owner {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .form-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .form-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 0;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .form-inner {
+            padding: 24px;
+            max-height: 80vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .form-overlay.active .form-container {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .form-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-select-display {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            user-select: none;
+        }
+
+        .form-select-wrapper.active .form-select-display {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+
+        .form-select-wrapper.active .form-select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .form-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px var(--glass-shadow);
+            z-index: 10003;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .form-select-options::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .form-select-options::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .form-select-options::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .form-select-options::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        .form-select-wrapper.active .form-select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .form-select-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-radius: 8px;
+            margin: 4px;
+        }
+
+        .form-select-option:first-child {
+            margin-top: 4px;
+        }
+
+        .form-select-option:last-child {
+            margin-bottom: 4px;
+        }
+
+        .form-select-option:hover {
+            background: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .form-select-option.selected {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+        }
+
+        .form-select-wrapper select {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .form-select-option.selected:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-bottom: 8px;
+        }
+
+        .form-btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .form-btn-cancel {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .form-btn-cancel:hover {
+            background: var(--glass-border);
+        }
+
+        .form-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .form-btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .form-btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .form-btn-danger:hover {
+            background: #dc2626;
         }
     </style>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
@@ -1198,8 +1916,25 @@
         }
 
         async function switchPanel(targetId, newIndex) {
-            if (isAnimating || newIndex === currentIndex) return;
+            if (newIndex === currentIndex) return;
+
+            if (isAnimating) {
+                const currentOldPanel = document.getElementById('contentPanel' + currentPanel);
+                const currentNewPanelLetter = currentPanel === 'A' ? 'B' : 'A';
+                const currentNewPanel = document.getElementById('contentPanel' + currentNewPanelLetter);
+
+                currentOldPanel.classList.remove('shrink-down', 'shrink-up');
+                currentOldPanel.classList.remove('active');
+                currentOldPanel.innerHTML = '';
+
+                currentNewPanel.classList.remove('grow-from-down', 'grow-from-up', 'active');
+                currentNewPanel.innerHTML = '';
+            }
+
             isAnimating = true;
+
+            // ✅ 先更新列表框选中项目
+            updateListActive(targetId);
 
             const direction = newIndex > currentIndex ? 'down' : 'up';
             const oldPanel = document.getElementById('contentPanel' + currentPanel);
@@ -1222,7 +1957,6 @@
                 oldPanel.classList.remove('shrink-down', 'shrink-up');
                 oldPanel.classList.remove('active');
                 oldPanel.innerHTML = '';
-                oldPanel.classList.remove('active');
             } else {
                 oldPanel.innerHTML = newContent;
                 oldPanel.classList.add('active');
@@ -1230,7 +1964,6 @@
                 await sleep(50);
             }
 
-            updateListActive(targetId);
             currentIndex = newIndex;
             currentPanel = newPanelLetter;
 
@@ -1382,14 +2115,6 @@
                         <div class="feature-card-divider"></div>
                         <div class="feature-card-desc">查看完整的 API 文档</div>
                     </div>
-                    <div class="feature-card" onclick="window.open('https://docs.838483.xyz/accountV6/index', '_blank')">
-                        <div class="feature-card-header">
-                            <div class="feature-card-icon">🏠</div>
-                            <div class="feature-card-title">首页</div>
-                        </div>
-                        <div class="feature-card-divider"></div>
-                        <div class="feature-card-desc">返回项目首页</div>
-                    </div>
                 </div>
             `;
         }
@@ -1447,8 +2172,8 @@
 
             const featureData = {
                 'email-notify': { title: '邮件通知设置', content: '<p>邮件通知功能正在开发中...</p>' },
-                'app-manage': { title: 'App 管理', content: '<p>应用管理功能正在开发中...</p>' },
-                'tag-manage': { title: 'Tag 管理', content: '<p>标签管理功能正在开发中...</p>' },
+                'app-manage': { title: 'App 管理', content: '<div id="appManageContent"></div>' },
+                'tag-manage': { title: 'Tag 管理', content: '<div id="tagManageContent"></div>' },
                 'api-key': { title: 'API 密钥管理', content: '<p>API 密钥管理功能正在开发中...</p>' },
                 'webhook': { title: 'Webhook 配置', content: '<p>Webhook 配置功能正在开发中...</p>' }
             };
@@ -1459,6 +2184,12 @@
 
             overlay.classList.add('active');
             setTimeout(() => dialog.classList.add('active'), 10);
+
+            if (featureId === 'app-manage') {
+                loadAppList();
+            } else if (featureId === 'tag-manage') {
+                loadTagList();
+            }
         }
 
         function closeFeatureDialog() {
@@ -1470,26 +2201,10 @@
 
         async function loadUserInfo() {
             try {
-                const response = await fetch('https://account.838483.xyz/v6/account', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'getUserInfo',
-                        controlKey: controlKey
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.returnData.code === 200) {
-                    const user = data.returnData.content;
-                    document.getElementById('userName').textContent = user.name || '未设置';
-                    const emailFromCookie = getCookie('userEmail');
-                    document.getElementById('userEmail').textContent = emailFromCookie || user.email || '未设置';
-                    document.getElementById('userUid').textContent = user.uid || '未知';
-                } else {
-                    showNotification('获取用户信息失败', 3000, 'error');
-                }
+                document.getElementById('userName').textContent = getCookie('userName') || '未设置';
+                const emailFromCookie = getCookie('userEmail');
+                document.getElementById('userEmail').textContent = emailFromCookie || '未设置';
+                document.getElementById('userUid').textContent = getCookie('userUid') || '未知';
             } catch (error) {
                 console.error('Failed to load user info:', error);
                 showNotification('获取用户信息失败', 3000, 'error');
@@ -1768,6 +2483,898 @@
             window.location.href = '../account/login.html?appID=dashboard';
         }
 
+        async function loadAppList() {
+            const content = document.getElementById('appManageContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="app-list-container">
+                    <div class="app-list-header">
+                        <div class="app-list-title">已注册的应用</div>
+                        <button class="app-register-btn" onclick="showRegisterAppForm()">注册新应用</button>
+                    </div>
+                    <div id="appListContainer">
+                        <button class="app-show-list-btn" onclick="showAppTurnstile()">显示列表</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showAppTurnstile() {
+            const container = document.getElementById('appListContainer');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="turnstile-container" id="turnstileContainer">
+                    <div class="turnstile-status visible processing" id="turnstileStatus">
+                        <div class="turnstile-status-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                        <span class="turnstile-status-text">正在进行人机验证</span>
+                    </div>
+                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onAppTurnstileSuccess" data-error-callback="onAppTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                </div>
+            `;
+
+            if (typeof turnstile !== 'undefined') {
+                turnstile.render('#turnstileWidget', {
+                    sitekey: '0x4AAAAAADSh9NZeszpOAll6',
+                    callback: onAppTurnstileSuccess,
+                    'error-callback': onAppTurnstileError,
+                    'expired-callback': onAppTurnstileExpired,
+                    theme: 'light'
+                });
+            }
+        }
+
+        function onAppTurnstileSuccess(token) {
+            appTurnstileToken = token;
+            showTurnstileStatus('success', '人机验证完成');
+            fetchAppList();
+        }
+
+        function onAppTurnstileError() {
+            appTurnstileToken = '';
+            showTurnstileStatus('error', '人机验证失败');
+        }
+
+        function onAppTurnstileExpired() {
+            appTurnstileToken = '';
+            showTurnstileStatus('error', '验证已过期');
+        }
+
+        async function fetchAppList() {
+            if (!appTurnstileToken) {
+                showNotification('请先完成人机验证', 3000, 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://account.838483.xyz/v6/appid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: appTurnstileToken,
+                        controlToken: controlKey,
+                        action: 'listApps'
+                    })
+                });
+
+                const data = await response.json();
+                const container = document.getElementById('appListContainer');
+
+                if (data.success && data.apps) {
+                    renderAppList(data.apps);
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📱</div>
+                            <div class="empty-state-text">暂无已注册的应用</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to fetch app list:', error);
+                showNotification('获取应用列表失败', 3000, 'error');
+            }
+        }
+
+        // 存储当前 app 列表
+        let currentAppList = [];
+
+        function renderAppList(apps) {
+            currentAppList = apps;
+            const container = document.getElementById('appListContainer');
+            if (!apps || apps.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📱</div>
+                        <div class="empty-state-text">暂无已注册的应用</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = apps.map(app => `
+                <div class="app-card">
+                    <div class="app-card-left">
+                        <div class="app-card-id">${app.appID}</div>
+                    </div>
+                    <div class="app-card-right">
+                        <button class="app-card-btn app-card-btn-secondary" onclick="showAppDetail('${app.appID}')">详情</button>
+                        <button class="app-card-btn app-card-btn-primary" onclick="showModifyAppKeyForm('${app.appID}')">编辑</button>
+                        <button class="app-card-btn app-card-btn-danger" onclick="deleteApp('${app.appID}')">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAppDetail(appID) {
+            const app = currentAppList.find(a => a.appID === appID);
+            if (!app) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'appDetailOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">应用详情</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">应用ID:</span>
+                            <span class="detail-value">${app.appID}</span>
+                        </div>
+                        ${app.Desp ? `
+                        <div class="detail-item">
+                            <span class="detail-label">描述:</span>
+                            <span class="detail-value">${app.Desp}</span>
+                        </div>
+                        ` : ''}
+                        ${app.permission ? `
+                        <div class="detail-item">
+                            <span class="detail-label">权限:</span>
+                            <span class="detail-value">${app.permission}</span>
+                        </div>
+                        ` : ''}
+                        ${app.callbackUrl ? `
+                        <div class="detail-item">
+                            <span class="detail-label">回调URL:</span>
+                            <span class="detail-value">${app.callbackUrl}</span>
+                        </div>
+                        ` : ''}
+                        ${app.require ? `
+                        <div class="detail-item">
+                            <span class="detail-label">必需参数:</span>
+                            <span class="detail-value">${app.require}</span>
+                        </div>
+                        ` : ''}
+                        <div class="detail-item">
+                            <span class="detail-label">签名密钥:</span>
+                            <code class="detail-code">${app.signKey}</code>
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-secondary" onclick="closeAppDetail()">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function closeAppDetail() {
+            const overlay = document.getElementById('appDetailOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        function showRegisterAppForm() {
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'registerAppOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">注册新应用</h3>
+                        <div class="form-group">
+                            <label class="form-label">应用ID *</label>
+                            <input type="text" class="form-input" id="registerAppId" placeholder="输入应用ID">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">签名密钥 *</label>
+                            <input type="text" class="form-input" id="registerSignKey" placeholder="输入签名密钥">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">描述</label>
+                            <textarea class="form-textarea" id="registerDesp" placeholder="输入应用描述"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">权限</label>
+                            <input type="text" class="form-input" id="registerPermission" placeholder="输入权限（逗号分隔）">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">回调URL</label>
+                            <input type="text" class="form-input" id="registerCallbackUrl" placeholder="输入回调URL">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">必需参数</label>
+                            <input type="text" class="form-input" id="registerRequire" placeholder="输入必需参数（逗号分隔）">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeRegisterAppForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="registerApp()">注册</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            initCustomSelectListeners();
+        }
+
+        function closeRegisterAppForm() {
+            const overlay = document.getElementById('registerAppOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function registerApp() {
+            const appID = document.getElementById('registerAppId').value.trim();
+            const signKey = document.getElementById('registerSignKey').value.trim();
+            const Desp = document.getElementById('registerDesp').value.trim();
+            const permission = document.getElementById('registerPermission').value.trim();
+            const callbackUrl = document.getElementById('registerCallbackUrl').value.trim();
+            const require = document.getElementById('registerRequire').value.trim();
+
+            if (!appID || !signKey) {
+                showNotification('应用ID和签名密钥不能为空', 3000, 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://account.838483.xyz/v6/appid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: appTurnstileToken,
+                        controlToken: controlKey,
+                        action: 'registerApp',
+                        appID,
+                        signKey,
+                        Desp,
+                        permission,
+                        callbackUrl,
+                        require
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showNotification('应用注册成功', 3000, 'success');
+                    closeRegisterAppForm();
+                    fetchAppList();
+                } else {
+                    showNotification(data.error || '注册失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to register app:', error);
+                showNotification('注册失败', 3000, 'error');
+            }
+        }
+
+        function showModifyAppKeyForm(appID) {
+            const app = currentAppList.find(a => a.appID === appID);
+            if (!app) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'modifyAppKeyOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">编辑应用 - ${appID}</h3>
+                        <div class="form-group">
+                            <label class="form-label">签名密钥</label>
+                            <input type="text" class="form-input" id="editSignKey" value="${app.signKey}" placeholder="输入新签名密钥">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">描述</label>
+                            <textarea class="form-textarea" id="editDesp" placeholder="输入应用描述">${app.Desp || ''}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">权限</label>
+                            <input type="text" class="form-input" id="editPermission" value="${app.permission || ''}" placeholder="输入权限（逗号分隔）">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">回调URL</label>
+                            <input type="text" class="form-input" id="editCallbackUrl" value="${app.callbackUrl || ''}" placeholder="输入回调URL">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">必需参数</label>
+                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入必需参数（逗号分隔）">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeModifyAppKeyForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="modifyAppKey('${appID}')">保存</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function closeModifyAppKeyForm() {
+            const overlay = document.getElementById('modifyAppKeyOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function modifyAppKey(appID) {
+            const app = currentAppList.find(a => a.appID === appID);
+            if (!app) return;
+
+            const newSignKey = document.getElementById('editSignKey').value.trim();
+            const permission = document.getElementById('editPermission').value.trim();
+            const require = document.getElementById('editRequire').value.trim();
+
+            const requestBody = {
+                turnstileToken: appTurnstileToken,
+                controlToken: controlKey,
+                action: 'updateApp',
+                appID
+            };
+
+            // 只包含修改了的字段
+            if (newSignKey !== app.signKey) {
+                requestBody.newSignKey = newSignKey;
+            }
+            if (permission !== (app.permission || '')) {
+                requestBody.permission = permission;
+            }
+            if (require !== (app.require || '')) {
+                requestBody.require = require;
+            }
+
+            try {
+                const response = await fetch('https://account.838483.xyz/v6/appid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showNotification('应用更新成功', 3000, 'success');
+                    closeModifyAppKeyForm();
+                    fetchAppList();
+                } else {
+                    showNotification(data.error || '更新失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to update app:', error);
+                showNotification('更新失败', 3000, 'error');
+            }
+        }
+
+        async function deleteApp(appID) {
+            showConfirm(`确定要删除应用 "${appID}" 吗？此操作无法撤销。`, async () => {
+                try {
+                    const response = await fetch('https://account.838483.xyz/v6/appid', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            turnstileToken: appTurnstileToken,
+                            controlToken: controlKey,
+                            action: 'deleteApp',
+                            appID
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showNotification('应用删除成功', 3000, 'success');
+                        fetchAppList();
+                    } else {
+                        showNotification(data.error || '删除失败', 3000, 'error');
+                    }
+                } catch (error) {
+                    console.error('Failed to delete app:', error);
+                    showNotification('删除失败', 3000, 'error');
+                }
+            });
+        }
+
+        async function loadTagList() {
+            const content = document.getElementById('tagManageContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="tag-list-container">
+                    <div class="tag-list-header">
+                        <div class="tag-list-title">已创建的标签</div>
+                        <div class="tag-actions">
+                            <button class="tag-register-btn" onclick="showRegisterTagForm()">创建标签</button>
+                            <button class="tag-add-user-btn" onclick="showAddTagForUserForm()">为他人添加</button>
+                        </div>
+                    </div>
+                    <div id="tagListContainer">
+                        <button class="tag-show-list-btn" onclick="showTagTurnstile()">显示列表</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showTagTurnstile() {
+            const container = document.getElementById('tagListContainer');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="turnstile-container" id="turnstileContainer">
+                    <div class="turnstile-status visible processing" id="turnstileStatus">
+                        <div class="turnstile-status-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                        <span class="turnstile-status-text">正在进行人机验证</span>
+                    </div>
+                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onTagTurnstileSuccess" data-error-callback="onTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                </div>
+            `;
+
+            if (typeof turnstile !== 'undefined') {
+                turnstile.render('#turnstileWidget', {
+                    sitekey: '0x4AAAAAADSh9NZeszpOAll6',
+                    callback: onTagTurnstileSuccess,
+                    'error-callback': onTagTurnstileError,
+                    'expired-callback': onTagTurnstileExpired,
+                    theme: 'light'
+                });
+            }
+        }
+
+        function onTagTurnstileSuccess(token) {
+            tagTurnstileToken = token;
+            showTurnstileStatus('success', '人机验证完成');
+            fetchTagList();
+        }
+
+        function onTagTurnstileError() {
+            tagTurnstileToken = '';
+            showTurnstileStatus('error', '人机验证失败');
+        }
+
+        function onTagTurnstileExpired() {
+            tagTurnstileToken = '';
+            showTurnstileStatus('error', '验证已过期');
+        }
+
+        async function fetchTagList() {
+            if (!tagTurnstileToken) {
+                showNotification('请先完成人机验证', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: tagTurnstileToken,
+                        uid: userUid,
+                        controlToken: controlKey,
+                        type: 'listUserTags'
+                    })
+                });
+
+                const data = await response.json();
+                const container = document.getElementById('tagListContainer');
+
+                if (data.returnData.code === 200 && data.returnData.content.tags) {
+                    renderTagList(data.returnData.content.tags);
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🏷️</div>
+                            <div class="empty-state-text">暂无已创建的标签</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to fetch tag list:', error);
+                showNotification('获取标签列表失败', 3000, 'error');
+            }
+        }
+
+        function renderTagList(tags) {
+            currentTagList = tags;
+            const container = document.getElementById('tagListContainer');
+            if (!tags || tags.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏷️</div>
+                        <div class="empty-state-text">暂无已创建的标签</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = tags.map(tag => `
+                <div class="tag-card">
+                    <div class="tag-card-left">
+                        <div class="tag-card-id">${tag.tagID}</div>
+                    </div>
+                    <div class="tag-card-right">
+                        <div class="toggle-container">
+                            <div class="toggle-switch ${tag.active === '1' ? 'active' : ''}" onclick="toggleTagActive('${tag.uid}')">
+                                <div class="toggle-switch-handle"></div>
+                            </div>
+                        </div>
+                        <button class="tag-card-btn tag-card-btn-secondary" onclick="showEditTagForm('${tag.uid}', '${tag.tagID}')">编辑</button>
+                        <button class="tag-card-btn tag-card-btn-danger" onclick="deleteTag('${tag.uid}')">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showRegisterTagForm() {
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'registerTagOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">创建新标签</h3>
+                        <div class="form-group">
+                            <label class="form-label">标签ID *</label>
+                            <input type="text" class="form-input" id="registerTagId" placeholder="输入标签ID">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeRegisterTagForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="registerTag()">创建</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            initCustomSelectListeners();
+        }
+
+        function closeRegisterTagForm() {
+            const overlay = document.getElementById('registerTagOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function registerTag() {
+            const tagID = document.getElementById('registerTagId').value.trim();
+
+            if (!tagID) {
+                showNotification('标签ID不能为空', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: tagTurnstileToken,
+                        uid: userUid,
+                        controlToken: controlKey,
+                        type: 'registerTag',
+                        tagID
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification('标签创建成功', 3000, 'success');
+                    closeRegisterTagForm();
+                    fetchTagList();
+                } else {
+                    showNotification(data.returnData.content?.error || '创建失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to register tag:', error);
+                showNotification('创建失败', 3000, 'error');
+            }
+        }
+
+        // 存储当前 tag 列表以便找到对应的 active 值
+        let currentTagList = [];
+
+        async function toggleTagActive(tagRecordUid) {
+            const userUid = getCookie('userUid');
+            const tag = currentTagList.find(t => t.uid === tagRecordUid);
+            const newActive = tag && tag.active === '1' ? '0' : '1';
+
+            try {
+                const response = await fetch('https://account.838483.xyz/v6/tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: tagTurnstileToken,
+                        uid: userUid,
+                        controlToken: controlKey,
+                        type: 'updateTag',
+                        tagRecordUid,
+                        active: newActive
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification('标签状态更新成功', 3000, 'success');
+                    fetchTagList();
+                } else {
+                    showNotification(data.returnData.content?.error || '更新失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to update tag:', error);
+                showNotification('更新失败', 3000, 'error');
+            }
+        }
+
+        async function deleteTag(tagRecordUid) {
+            showConfirm('确定要删除此标签吗？此操作无法撤销。', async () => {
+                try {
+                    const userUid = getCookie('userUid');
+                    const response = await fetch('https://account.838483.xyz/v6/tag', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            turnstileToken: tagTurnstileToken,
+                            uid: userUid,
+                            controlToken: controlKey,
+                            type: 'deleteTag',
+                            tagRecordUid
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.returnData.code === 200) {
+                        showNotification('标签删除成功', 3000, 'success');
+                        fetchTagList();
+                    } else {
+                        showNotification(data.returnData.content?.error || '删除失败', 3000, 'error');
+                    }
+                } catch (error) {
+                    console.error('Failed to delete tag:', error);
+                    showNotification('删除失败', 3000, 'error');
+                }
+            });
+        }
+
+        function showAddTagForUserForm() {
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'addTagForUserOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">为其他用户添加标签</h3>
+                        <div class="form-group">
+                            <label class="form-label">目标用户UID *</label>
+                            <input type="text" class="form-input" id="targetUserUid" placeholder="输入目标用户UID">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">标签ID *</label>
+                            <input type="text" class="form-input" id="addTagId" placeholder="输入标签ID">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeAddTagForUserForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="addTagForUser()">添加</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function closeAddTagForUserForm() {
+            const overlay = document.getElementById('addTagForUserOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        function showEditTagForm(tagRecordUid, currentTagId) {
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'editTagOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">编辑标签</h3>
+                        <div class="form-group">
+                            <label class="form-label">标签ID *</label>
+                            <input type="text" class="form-input" id="editTagId" value="${currentTagId}" placeholder="输入标签ID">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeEditTagForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="editTag('${tagRecordUid}')">保存</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function closeEditTagForm() {
+            const overlay = document.getElementById('editTagOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function editTag(tagRecordUid) {
+            const tagID = document.getElementById('editTagId').value.trim();
+
+            if (!tagID) {
+                showNotification('标签ID不能为空', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: tagTurnstileToken,
+                        uid: userUid,
+                        controlToken: controlKey,
+                        type: 'updateTag',
+                        tagRecordUid,
+                        newTagID: tagID
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification('标签更新成功', 3000, 'success');
+                    closeEditTagForm();
+                    fetchTagList();
+                } else {
+                    showNotification(data.returnData.content?.error || '更新失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to update tag:', error);
+                showNotification('更新失败', 3000, 'error');
+            }
+        }
+
+        async function addTagForUser() {
+            const targetUid = document.getElementById('targetUserUid').value.trim();
+            const tagID = document.getElementById('addTagId').value.trim();
+
+            if (!targetUid || !tagID) {
+                showNotification('目标用户UID和标签ID不能为空', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        turnstileToken: tagTurnstileToken,
+                        ownerUid: userUid,
+                        controlToken: controlKey,
+                        type: 'addTagForUser',
+                        targetUid,
+                        tagID
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification('标签添加成功', 3000, 'success');
+                    closeAddTagForUserForm();
+                    fetchTagList();
+                } else {
+                    showNotification(data.returnData.content?.error || '添加失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to add tag for user:', error);
+                showNotification('添加失败', 3000, 'error');
+            }
+        }
+
+        let appTurnstileToken = '';
+        let tagTurnstileToken = '';
+
+        function initCustomSelects() {
+            document.addEventListener('click', (e) => {
+                const wrappers = document.querySelectorAll('.form-select-wrapper.active');
+                wrappers.forEach(wrapper => {
+                    if (!wrapper.contains(e.target)) {
+                        wrapper.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        function toggleCustomSelect(wrapperId, optionsId, selectId) {
+            const wrapper = document.getElementById(wrapperId);
+            const optionsContainer = document.getElementById(optionsId);
+            const select = document.getElementById(selectId);
+            const display = wrapper.querySelector('.form-select-display');
+
+            if (wrapper.classList.contains('active')) {
+                wrapper.classList.remove('active');
+                return;
+            }
+
+            document.querySelectorAll('.form-select-wrapper.active').forEach(w => {
+                if (w !== wrapper) w.classList.remove('active');
+            });
+
+            const options = select.querySelectorAll('option');
+            const selectedValue = select.value;
+
+            optionsContainer.innerHTML = '';
+            options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'form-select-option' + (option.value === selectedValue ? ' selected' : '');
+                optionDiv.textContent = option.textContent;
+                optionDiv.dataset.value = option.value;
+                optionDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    select.value = option.value;
+                    select.querySelectorAll('option').forEach(opt => opt.selected = opt.value === option.value);
+                    select.dispatchEvent(new Event('change'));
+                    optionsContainer.querySelectorAll('.form-select-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    optionDiv.classList.add('selected');
+                    display.textContent = option.textContent;
+                    wrapper.classList.remove('active');
+                });
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            wrapper.classList.add('active');
+        }
+
+        function initCustomSelectListeners() {
+            setTimeout(() => {
+                const registerWrapper = document.getElementById('registerTagActiveWrapper');
+                if (registerWrapper) {
+                    registerWrapper.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleCustomSelect('registerTagActiveWrapper', 'registerTagActiveOptions', 'registerTagActive');
+                    });
+                }
+
+                const addWrapper = document.getElementById('addTagActiveWrapper');
+                if (addWrapper) {
+                    addWrapper.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleCustomSelect('addTagActiveWrapper', 'addTagActiveOptions', 'addTagActive');
+                    });
+                }
+            }, 100);
+        }
+
         function initListItems() {
             const items = document.querySelectorAll('.list-item');
             items.forEach(item => {
@@ -1781,6 +3388,7 @@
 
         window.onload = async function() {
             loadSavedTheme();
+            initCustomSelects();
 
             controlKey = getCookie('controlKey');
             if (!controlKey) {
