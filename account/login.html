@@ -368,6 +368,27 @@
             justify-content: center;
             flex-shrink: 0;
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .turnstile-container.flash-success {
+            animation: flashGreen 1.2s ease-out;
+        }
+
+        .turnstile-container.flash-error {
+            animation: flashRed 1.2s ease-out;
+        }
+
+        @keyframes flashGreen {
+            0% { background: var(--input-bg); }
+            25% { background: rgba(16, 185, 129, 0.35); }
+            100% { background: var(--input-bg); }
+        }
+
+        @keyframes flashRed {
+            0% { background: var(--input-bg); }
+            25% { background: rgba(239, 68, 68, 0.35); }
+            100% { background: var(--input-bg); }
         }
 
         .turnstile-container iframe {
@@ -446,6 +467,23 @@
         }
 
         .turnstile-status.error .icon-x {
+            display: block;
+        }
+
+        .turnstile-status.processing .turnstile-status-icon {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .turnstile-status.processing .turnstile-status-icon svg {
+            stroke: #3b82f6;
+        }
+
+        .turnstile-status.processing .icon-check,
+        .turnstile-status.processing .icon-x {
+            display: none;
+        }
+
+        .turnstile-status.processing .icon-spinner {
             display: block;
         }
 
@@ -1020,7 +1058,7 @@
                         </div>
                         <span class="turnstile-status-text">准备验证</span>
                     </div>
-                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError" data-appearance="interaction-only"></div>
+                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
                 </div>
                 
                 <button class="btn" id="login-btn">
@@ -1318,6 +1356,7 @@
         function showTurnstileStatus(status, message) {
           const statusEl = document.getElementById('turnstileStatus');
           const widgetEl = document.getElementById('turnstileWidget');
+          const containerEl = document.getElementById('turnstileContainer');
           
           if (!statusEl) return;
           
@@ -1326,6 +1365,20 @@
           
           if (widgetEl) {
             widgetEl.style.display = 'none';
+          }
+          
+          if (containerEl) {
+            containerEl.classList.remove('flash-success', 'flash-error');
+            
+            if (status === 'success') {
+              setTimeout(() => {
+                containerEl.classList.add('flash-success');
+              }, 100);
+            } else if (status === 'error') {
+              setTimeout(() => {
+                containerEl.classList.add('flash-error');
+              }, 100);
+            }
           }
         }
 
