@@ -2706,7 +2706,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        action: 'listApps',
+                        type: 'getUserApps',
                         controlToken: controlKey,
                         turnstileToken: turnstileToken
                     })
@@ -3006,7 +3006,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         controlToken: controlKey,
-                        action: 'getUserApps'
+                        action: 'listApps'
                     })
                 });
 
