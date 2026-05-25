@@ -933,9 +933,372 @@
             display: none;
         }
 
-        .turnstile-status-icon .icon-spinner {
+        .form-multi-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-multi-select-display {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            min-height: 44px;
+        }
+
+        .form-multi-select-wrapper.active .form-multi-select-display {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-multi-select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+
+        .form-multi-select-wrapper.active .form-multi-select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .form-multi-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px var(--glass-shadow);
+            z-index: 10003;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .form-multi-select-options::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .form-multi-select-options::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .form-multi-select-options::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .form-multi-select-wrapper.active .form-multi-select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .form-multi-select-option {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 14px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-multi-select-option:hover {
+            background: var(--primary-light);
+        }
+
+        .form-multi-select-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-multi-select-option.disabled:hover {
+            background: transparent;
+        }
+
+        .form-multi-select-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--glass-border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .form-multi-select-option.selected .form-multi-select-checkbox {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-multi-select-checkbox svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
+            display: none;
+        }
+
+        .form-multi-select-option.selected .form-multi-select-checkbox svg {
             display: block;
-            animation: spin 1s linear infinite;
+        }
+
+        .form-multi-select-option.disabled .form-multi-select-checkbox {
+            background: var(--input-bg);
+            border-color: var(--glass-border);
+        }
+
+        .form-multi-select-option.disabled .form-multi-select-checkbox svg {
+            display: block;
+            fill: var(--text-secondary);
+        }
+
+        .form-multi-select-option-label {
+            flex: 1;
+        }
+
+        .form-multi-select-option-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .rsa-key-generator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .rsa-key-textarea {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+
+        .rsa-key-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .rsa-key-textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .rsa-generate-btn {
+            padding: 12px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .rsa-generate-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .rsa-generate-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .rsa-generate-btn:disabled {
+            background: var(--glass-border);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .rsa-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10004;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rsa-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .rsa-modal {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 0;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rsa-modal-overlay.active .rsa-modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .rsa-modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rsa-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .rsa-modal-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .rsa-modal-close:hover {
+            background: var(--glass-border);
+        }
+
+        .rsa-modal-close svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+        }
+
+        .rsa-modal-body {
+            padding: 24px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .rsa-key-section {
+            margin-bottom: 20px;
+        }
+
+        .rsa-key-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .rsa-key-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .rsa-key-value {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-primary);
+            word-break: break-all;
+            line-height: 1.5;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .rsa-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .rsa-modal-btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .rsa-modal-btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .rsa-modal-btn-secondary:hover {
+            background: var(--glass-border);
+        }
+
+        .rsa-modal-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .rsa-modal-btn-primary:hover {
+            background: var(--primary-hover);
         }
 
         .turnstile-status.success .turnstile-status-icon {
@@ -2104,14 +2467,6 @@
                         <div class="feature-card-divider"></div>
                         <div class="feature-card-desc">查看和轮换 API 密钥</div>
                     </div>
-                    <div class="feature-card" onclick="openFeatureDialog('webhook')">
-                        <div class="feature-card-header">
-                            <div class="feature-card-icon">🪝</div>
-                            <div class="feature-card-title">Webhook 配置</div>
-                        </div>
-                        <div class="feature-card-divider"></div>
-                        <div class="feature-card-desc">设置回调地址</div>
-                    </div>
                     <div class="feature-card" onclick="window.open('https://docs.838483.xyz/accountV6/index', '_blank')">
                         <div class="feature-card-header">
                             <div class="feature-card-icon">📚</div>
@@ -2693,8 +3048,14 @@
                             <input type="text" class="form-input" id="registerAppId" placeholder="输入应用ID">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">签名密钥 *</label>
-                            <input type="text" class="form-input" id="registerSignKey" placeholder="输入签名密钥">
+                            <label class="form-label">签名密钥 * (JWK格式RSA私钥)</label>
+                            <div class="rsa-key-generator">
+                                <textarea class="rsa-key-textarea" id="registerSignKey" placeholder="输入签名密钥或点击生成"></textarea>
+                                <button class="rsa-generate-btn" onclick="generateRSAKey('registerSignKey')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                                    生成
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">描述</label>
@@ -2702,15 +3063,40 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">权限</label>
-                            <input type="text" class="form-input" id="registerPermission" placeholder="输入权限（逗号分隔）">
+                            <div class="form-multi-select-wrapper" id="registerPermissionWrapper">
+                                <div class="form-multi-select-display">基础权限</div>
+                                <svg class="form-multi-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
+                                <div class="form-multi-select-options"></div>
+                                <input type="hidden" id="registerPermission" value="basic">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">回调URL</label>
                             <input type="text" class="form-input" id="registerCallbackUrl" placeholder="输入回调URL">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">必需参数</label>
-                            <input type="text" class="form-input" id="registerRequire" placeholder="输入必需参数（逗号分隔）">
+                            <label class="form-label">登录条件表达式</label>
+                            <input type="text" class="form-input" id="registerRequire" placeholder="输入登录条件表达式（为空则不限制）">
+                        </div>
+                        <div class="form-group">
+                            <div class="turnstile-container" id="registerAppTurnstile">
+                                <div class="turnstile-status visible processing" id="registerAppTurnstileStatus">
+                                    <div class="turnstile-status-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </div>
+                                    <span class="turnstile-status-text">正在进行人机验证</span>
+                                </div>
+                                <div class="cf-turnstile" id="registerAppTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onRegisterAppTurnstileSuccess" data-error-callback="onRegisterAppTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                            </div>
                         </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeRegisterAppForm()">取消</button>
@@ -2720,12 +3106,34 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-            initCustomSelectListeners();
+            
+            // 初始化权限选择器（默认选中basic）
+            setTimeout(() => {
+                initMultiSelectPermissions('registerPermissionWrapper', ['basic']);
+                renderTurnstile('registerAppTurnstileWidget', onRegisterAppTurnstileSuccess);
+            }, 100);
         }
 
         function closeRegisterAppForm() {
             const overlay = document.getElementById('registerAppOverlay');
             if (overlay) overlay.remove();
+        }
+
+        function onRegisterAppTurnstileSuccess(token) {
+            appTurnstileToken = token;
+            const statusEl = document.getElementById('registerAppTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status success visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
+            }
+        }
+
+        function onRegisterAppTurnstileError() {
+            const statusEl = document.getElementById('registerAppTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status error visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
+            }
         }
 
         async function registerApp() {
@@ -2752,7 +3160,7 @@
                         appID,
                         signKey,
                         Desp,
-                        permission,
+                        permission: permission || 'basic',
                         callbackUrl,
                         require
                     })
@@ -2785,8 +3193,14 @@
                     <div class="form-inner">
                         <h3 class="form-title">编辑应用 - ${appID}</h3>
                         <div class="form-group">
-                            <label class="form-label">签名密钥</label>
-                            <input type="text" class="form-input" id="editSignKey" value="${app.signKey}" placeholder="输入新签名密钥">
+                            <label class="form-label">签名密钥 (JWK格式RSA私钥)</label>
+                            <div class="rsa-key-generator">
+                                <textarea class="rsa-key-textarea" id="editSignKey" placeholder="输入新签名密钥">${app.signKey || ''}</textarea>
+                                <button class="rsa-generate-btn" onclick="generateRSAKey('editSignKey')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                                    生成
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">描述</label>
@@ -2794,15 +3208,40 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">权限</label>
-                            <input type="text" class="form-input" id="editPermission" value="${app.permission || ''}" placeholder="输入权限（逗号分隔）">
+                            <div class="form-multi-select-wrapper" id="editPermissionWrapper">
+                                <div class="form-multi-select-display">${app.permission || '请选择权限'}</div>
+                                <svg class="form-multi-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
+                                <div class="form-multi-select-options"></div>
+                                <input type="hidden" id="editPermission" value="${app.permission || ''}">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">回调URL</label>
                             <input type="text" class="form-input" id="editCallbackUrl" value="${app.callbackUrl || ''}" placeholder="输入回调URL">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">必需参数</label>
-                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入必需参数（逗号分隔）">
+                            <label class="form-label">登录条件表达式</label>
+                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入登录条件表达式">
+                        </div>
+                        <div class="form-group">
+                            <div class="turnstile-container" id="editAppTurnstile">
+                                <div class="turnstile-status visible processing" id="editAppTurnstileStatus">
+                                    <div class="turnstile-status-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </div>
+                                    <span class="turnstile-status-text">正在进行人机验证</span>
+                                </div>
+                                <div class="cf-turnstile" id="editAppTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onEditAppTurnstileSuccess" data-error-callback="onEditAppTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                            </div>
                         </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeModifyAppKeyForm()">取消</button>
@@ -2812,11 +3251,35 @@
                 </div>
             `;
             document.body.appendChild(overlay);
+            
+            // 初始化权限选择器
+            setTimeout(() => {
+                const currentPerms = app.permission ? app.permission.split(',') : ['basic'];
+                initMultiSelectPermissions('editPermissionWrapper', currentPerms);
+                renderTurnstile('editAppTurnstileWidget', onEditAppTurnstileSuccess);
+            }, 100);
         }
 
         function closeModifyAppKeyForm() {
             const overlay = document.getElementById('modifyAppKeyOverlay');
             if (overlay) overlay.remove();
+        }
+
+        function onEditAppTurnstileSuccess(token) {
+            appTurnstileToken = token;
+            const statusEl = document.getElementById('editAppTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status success visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
+            }
+        }
+
+        function onEditAppTurnstileError() {
+            const statusEl = document.getElementById('editAppTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status error visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
+            }
         }
 
         async function modifyAppKey(appID) {
@@ -2839,7 +3302,7 @@
                 requestBody.newSignKey = newSignKey;
             }
             if (permission !== (app.permission || '')) {
-                requestBody.permission = permission;
+                requestBody.permission = permission || 'basic';
             }
             if (require !== (app.require || '')) {
                 requestBody.require = require;
@@ -3049,6 +3512,26 @@
                             <label class="form-label">标签ID *</label>
                             <input type="text" class="form-input" id="registerTagId" placeholder="输入标签ID">
                         </div>
+                        <div class="form-group">
+                            <div class="turnstile-container" id="registerTagTurnstile">
+                                <div class="turnstile-status visible processing" id="registerTagTurnstileStatus">
+                                    <div class="turnstile-status-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </div>
+                                    <span class="turnstile-status-text">正在进行人机验证</span>
+                                </div>
+                                <div class="cf-turnstile" id="registerTagTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onRegisterTagTurnstileSuccess" data-error-callback="onRegisterTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                            </div>
+                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeRegisterTagForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="registerTag()">创建</button>
@@ -3057,12 +3540,31 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-            initCustomSelectListeners();
+            setTimeout(() => {
+                renderTurnstile('registerTagTurnstileWidget', onRegisterTagTurnstileSuccess);
+            }, 100);
         }
 
         function closeRegisterTagForm() {
             const overlay = document.getElementById('registerTagOverlay');
             if (overlay) overlay.remove();
+        }
+
+        function onRegisterTagTurnstileSuccess(token) {
+            tagTurnstileToken = token;
+            const statusEl = document.getElementById('registerTagTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status success visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
+            }
+        }
+
+        function onRegisterTagTurnstileError() {
+            const statusEl = document.getElementById('registerTagTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status error visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
+            }
         }
 
         async function registerTag() {
@@ -3185,6 +3687,26 @@
                             <label class="form-label">标签ID *</label>
                             <input type="text" class="form-input" id="addTagId" placeholder="输入标签ID">
                         </div>
+                        <div class="form-group">
+                            <div class="turnstile-container" id="addTagTurnstile">
+                                <div class="turnstile-status visible processing" id="addTagTurnstileStatus">
+                                    <div class="turnstile-status-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </div>
+                                    <span class="turnstile-status-text">正在进行人机验证</span>
+                                </div>
+                                <div class="cf-turnstile" id="addTagTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onAddTagTurnstileSuccess" data-error-callback="onAddTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                            </div>
+                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeAddTagForUserForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="addTagForUser()">添加</button>
@@ -3193,11 +3715,31 @@
                 </div>
             `;
             document.body.appendChild(overlay);
+            setTimeout(() => {
+                renderTurnstile('addTagTurnstileWidget', onAddTagTurnstileSuccess);
+            }, 100);
         }
 
         function closeAddTagForUserForm() {
             const overlay = document.getElementById('addTagForUserOverlay');
             if (overlay) overlay.remove();
+        }
+
+        function onAddTagTurnstileSuccess(token) {
+            tagTurnstileToken = token;
+            const statusEl = document.getElementById('addTagTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status success visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
+            }
+        }
+
+        function onAddTagTurnstileError() {
+            const statusEl = document.getElementById('addTagTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status error visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
+            }
         }
 
         function showEditTagForm(tagRecordUid, currentTagId) {
@@ -3212,6 +3754,26 @@
                             <label class="form-label">标签ID *</label>
                             <input type="text" class="form-input" id="editTagId" value="${currentTagId}" placeholder="输入标签ID">
                         </div>
+                        <div class="form-group">
+                            <div class="turnstile-container" id="editTagTurnstile">
+                                <div class="turnstile-status visible processing" id="editTagTurnstileStatus">
+                                    <div class="turnstile-status-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </div>
+                                    <span class="turnstile-status-text">正在进行人机验证</span>
+                                </div>
+                                <div class="cf-turnstile" id="editTagTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onEditTagTurnstileSuccess" data-error-callback="onEditTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                            </div>
+                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeEditTagForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="editTag('${tagRecordUid}')">保存</button>
@@ -3220,11 +3782,31 @@
                 </div>
             `;
             document.body.appendChild(overlay);
+            setTimeout(() => {
+                renderTurnstile('editTagTurnstileWidget', onEditTagTurnstileSuccess);
+            }, 100);
         }
 
         function closeEditTagForm() {
             const overlay = document.getElementById('editTagOverlay');
             if (overlay) overlay.remove();
+        }
+
+        function onEditTagTurnstileSuccess(token) {
+            tagTurnstileToken = token;
+            const statusEl = document.getElementById('editTagTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status success visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
+            }
+        }
+
+        function onEditTagTurnstileError() {
+            const statusEl = document.getElementById('editTagTurnstileStatus');
+            if (statusEl) {
+                statusEl.className = 'turnstile-status error visible';
+                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
+            }
         }
 
         async function editTag(tagRecordUid) {
@@ -3378,6 +3960,199 @@
                     });
                 }
             }, 100);
+        }
+
+        // 支持的权限列表
+        const ALLOWED_PERMISSIONS = [
+            { value: 'basic', label: '基础权限', desc: '基本用户信息访问', required: true },
+            { value: 'email', label: '邮箱权限', desc: '获取用户邮箱地址', required: false }
+        ];
+
+        // 当前打开的表单类型（用于turnstile）
+        let currentFormType = '';
+        let baseZIndex = 10000;
+        let currentDialogZIndex = baseZIndex;
+        let activeDialogs = [];
+
+        // 渲染turnstile到指定容器
+        function renderTurnstile(containerId, callback) {
+            if (typeof turnstile !== 'undefined') {
+                turnstile.render('#' + containerId, {
+                    sitekey: '0x4AAAAAADSh9NZeszpOAll6',
+                    callback: callback,
+                    'error-callback': () => { showNotification('验证失败', 3000, 'error'); },
+                    'expired-callback': () => { showNotification('验证已过期', 3000, 'error'); },
+                    theme: 'light'
+                });
+            }
+        }
+
+        // 初始化多选权限选择器
+        function initMultiSelectPermissions(wrapperId, selectedValues = []) {
+            const wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return;
+
+            const display = wrapper.querySelector('.form-multi-select-display');
+            const optionsContainer = wrapper.querySelector('.form-multi-select-options');
+            const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+
+            // 设置初始选中状态
+            const selected = new Set(selectedValues);
+
+            // 渲染选项
+            optionsContainer.innerHTML = ALLOWED_PERMISSIONS.map(perm => `
+                <div class="form-multi-select-option ${perm.required ? 'disabled' : ''} ${selected.has(perm.value) ? 'selected' : ''}" data-value="${perm.value}">
+                    <div class="form-multi-select-checkbox">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <div>
+                        <div class="form-multi-select-option-label">${perm.label}</div>
+                        <div class="form-multi-select-option-desc">${perm.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // 更新显示文本
+            updateDisplayText();
+
+            // 添加点击事件
+            optionsContainer.addEventListener('click', (e) => {
+                const option = e.target.closest('.form-multi-select-option');
+                if (!option || option.classList.contains('disabled')) return;
+
+                const value = option.dataset.value;
+                if (selected.has(value)) {
+                    selected.delete(value);
+                    option.classList.remove('selected');
+                } else {
+                    selected.add(value);
+                    option.classList.add('selected');
+                }
+                updateDisplayText();
+            });
+
+            // 点击显示区域切换下拉
+            display.addEventListener('click', () => {
+                wrapper.classList.toggle('active');
+            });
+
+            // 点击外部关闭
+            document.addEventListener('click', (e) => {
+                if (!wrapper.contains(e.target)) {
+                    wrapper.classList.remove('active');
+                }
+            });
+
+            function updateDisplayText() {
+                const selectedItems = ALLOWED_PERMISSIONS.filter(p => selected.has(p.value));
+                if (selectedItems.length === 0) {
+                    display.textContent = '请选择权限';
+                } else {
+                    display.textContent = selectedItems.map(p => p.label).join(', ');
+                }
+                if (hiddenInput) {
+                    hiddenInput.value = Array.from(selected).join(',');
+                }
+            }
+
+            // 暴露方法供外部调用
+            wrapper.getSelected = () => Array.from(selected);
+            wrapper.setSelected = (values) => {
+                selected.clear();
+                values.forEach(v => selected.add(v));
+                optionsContainer.querySelectorAll('.form-multi-select-option').forEach(opt => {
+                    opt.classList.toggle('selected', selected.has(opt.dataset.value));
+                });
+                updateDisplayText();
+            };
+        }
+
+        // RSA密钥生成
+        async function generateRSAKey(targetTextareaId) {
+            try {
+                const response = await fetch('https://rsa.838483.xyz/generate');
+                const data = await response.json();
+
+                // 显示密钥弹窗
+                showRSAKeyModal(data);
+
+                // 如果有目标文本框，填入签名私钥
+                if (targetTextareaId) {
+                    const textarea = document.getElementById(targetTextareaId);
+                    if (textarea) {
+                        textarea.value = JSON.stringify(data.sign.privateKey, null, 2);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to generate RSA key:', error);
+                showNotification('生成密钥失败', 3000, 'error');
+            }
+        }
+
+        // 显示RSA密钥弹窗
+        function showRSAKeyModal(keyData) {
+            const overlay = document.createElement('div');
+            overlay.className = 'rsa-modal-overlay active';
+            overlay.id = 'rsaKeyModal';
+            overlay.innerHTML = `
+                <div class="rsa-modal">
+                    <div class="rsa-modal-header">
+                        <span class="rsa-modal-title">RSA 密钥对</span>
+                        <button class="rsa-modal-close" onclick="closeRSAKeyModal()">
+                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                        </button>
+                    </div>
+                    <div class="rsa-modal-body">
+                        <div class="rsa-key-section">
+                            <span class="rsa-key-label">签名公钥</span>
+                            <div class="rsa-key-value">${JSON.stringify(keyData.sign.publicKey, null, 2)}</div>
+                        </div>
+                        <div class="rsa-key-section">
+                            <span class="rsa-key-label">签名私钥</span>
+                            <div class="rsa-key-value">${JSON.stringify(keyData.sign.privateKey, null, 2)}</div>
+                        </div>
+                        <div class="rsa-key-section">
+                            <span class="rsa-key-label">加密公钥</span>
+                            <div class="rsa-key-value">${JSON.stringify(keyData.encrypt.publicKey, null, 2)}</div>
+                        </div>
+                        <div class="rsa-key-section">
+                            <span class="rsa-key-label">加密私钥</span>
+                            <div class="rsa-key-value">${JSON.stringify(keyData.encrypt.privateKey, null, 2)}</div>
+                        </div>
+                    </div>
+                    <div class="rsa-modal-footer">
+                        <button class="rsa-modal-btn rsa-modal-btn-secondary" onclick="closeRSAKeyModal()">关闭</button>
+                        <button class="rsa-modal-btn rsa-modal-btn-primary" onclick="copyRSAKeys()">复制全部</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function closeRSAKeyModal() {
+            const overlay = document.getElementById('rsaKeyModal');
+            if (overlay) {
+                overlay.classList.remove('active');
+                setTimeout(() => overlay.remove(), 300);
+            }
+        }
+
+        function copyRSAKeys() {
+            const modal = document.querySelector('.rsa-modal');
+            if (!modal) return;
+
+            const keySections = modal.querySelectorAll('.rsa-key-value');
+            let allKeys = '';
+            keySections.forEach((section, index) => {
+                const labels = ['签名公钥', '签名私钥', '加密公钥', '加密私钥'];
+                allKeys += `${labels[index]}:\n${section.textContent}\n\n`;
+            });
+
+            navigator.clipboard.writeText(allKeys.trim()).then(() => {
+                showNotification('已复制到剪贴板', 3000, 'success');
+            }).catch(() => {
+                showNotification('复制失败', 3000, 'error');
+            });
         }
 
         function initListItems() {
