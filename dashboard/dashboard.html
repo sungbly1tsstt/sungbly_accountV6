@@ -3013,8 +3013,8 @@
                 const data = await response.json();
                 const container = document.getElementById('appListContainer');
 
-                if (data.returnData && data.returnData.code === 200 && data.returnData.content && data.returnData.content.apps) {
-                    renderAppList(data.returnData.content.apps);
+                if (data.success && data.apps) {
+                    renderAppList(data.apps);
                 } else {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -3080,10 +3080,10 @@
                             <span class="detail-label">应用ID:</span>
                             <span class="detail-value">${app.appID}</span>
                         </div>
-                        ${app.description ? `
+                        ${app.Desp ? `
                         <div class="detail-item">
                             <span class="detail-label">描述:</span>
-                            <span class="detail-value">${app.description}</span>
+                            <span class="detail-value">${app.Desp}</span>
                         </div>
                         ` : ''}
                         ${app.permission ? `
@@ -3228,7 +3228,7 @@
         async function registerApp() {
             const appID = document.getElementById('registerAppId').value.trim();
             const signKey = document.getElementById('registerSignKey').value.trim();
-            const description = document.getElementById('registerDesp').value.trim();
+            const Desp = document.getElementById('registerDesp').value.trim();
             const permission = document.getElementById('registerPermission').value.trim();
             const callbackUrl = document.getElementById('registerCallbackUrl').value.trim();
             const require = document.getElementById('registerRequire').value.trim();
@@ -3248,7 +3248,7 @@
                         action: 'registerApp',
                         appID,
                         signKey,
-                        description,
+                        Desp,
                         permission: permission || 'basic',
                         callbackUrl,
                         require
@@ -3257,12 +3257,12 @@
 
                 const data = await response.json();
 
-                if (data.returnData && data.returnData.code === 200) {
+                if (data.success) {
                     showNotification('应用注册成功', 3000, 'success');
                     closeRegisterAppForm();
                     fetchAppList();
                 } else {
-                    showNotification(data.returnData?.content?.error || '注册失败', 3000, 'error');
+                    showNotification(data.error || '注册失败', 3000, 'error');
                 }
             } catch (error) {
                 console.error('Failed to register app:', error);
@@ -3277,86 +3277,56 @@
             return permissionItems.some(item => !allowedPerms.includes(item));
         }
 
-        async function fetchAppDetails(appID) {
-            try {
-                const response = await fetch('https://account.838483.xyz/v6/appid', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        controlToken: controlKey,
-                        action: 'getApp',
-                        appID
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.returnData && data.returnData.code === 200 && data.returnData.content) {
-                    return data.returnData.content;
-                }
-                return null;
-            } catch (error) {
-                console.error('Failed to fetch app details:', error);
-                return null;
-            }
-        }
-
         function showModifyAppKeyForm(appID) {
             const app = currentAppList.find(a => a.appID === appID);
             if (!app) return;
 
-            fetchAppDetails(appID).then(appDetails => {
-                if (!appDetails) {
-                    showNotification('获取应用详情失败', 3000, 'error');
-                    return;
-                }
+            const hasSpecialPerm = hasSpecialPermission(app.permission);
 
-                const hasSpecialPerm = hasSpecialPermission(appDetails.permission);
-
-                const overlay = document.createElement('div');
-                overlay.className = 'form-overlay active';
-                overlay.id = 'modifyAppKeyOverlay';
-                overlay.innerHTML = `
-                    <div class="form-container">
-                        <div class="form-inner">
-                            <h3 class="form-title">编辑应用 - ${appID}</h3>
-                            ${hasSpecialPerm ? `
-                            <div style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px; color: var(--text-primary);">
-                                <strong>注意：</strong>由于此应用包含特殊权限设置，如要修改权限请联系客服。当前仅允许修改密钥和登录限制。同时modifyAppKey现在支持require参数，用于修改登录限制。
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'modifyAppKeyOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">编辑应用 - ${appID}</h3>
+                        ${hasSpecialPerm ? `
+                        <div style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px; color: var(--text-primary);">
+                            <strong>注意：</strong>由于此应用包含特殊权限设置，如要修改权限请联系客服。当前仅允许修改密钥和登录限制。同时modifyAppKey现在支持require参数，用于修改登录限制。
+                        </div>
+                        ` : ''}
+                        <div class="form-group">
+                            <label class="form-label">签名密钥 (JWK格式RSA私钥)</label>
+                            <div class="rsa-key-generator">
+                                <textarea class="rsa-key-textarea" id="editSignKey" placeholder="输入新签名密钥">${app.signKey || ''}</textarea>
+                                <button class="rsa-generate-btn" onclick="generateRSAKey('editSignKey')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                                    生成
+                                </button>
                             </div>
-                            ` : ''}
-                            <div class="form-group">
-                                <label class="form-label">签名密钥 (JWK格式RSA私钥)</label>
-                                <div class="rsa-key-generator">
-                                    <textarea class="rsa-key-textarea" id="editSignKey" placeholder="输入新签名密钥">${appDetails.signKey || ''}</textarea>
-                                    <button class="rsa-generate-btn" onclick="generateRSAKey('editSignKey')">
-                                        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-                                        生成
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
+                            <label class="form-label">描述</label>
+                            <textarea class="form-textarea" id="editDesp" placeholder="输入应用描述">${app.Desp || ''}</textarea>
+                        </div>
+                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
+                            <label class="form-label">权限</label>
+                            <div class="form-multi-select-wrapper" id="editPermissionWrapper">
+                                <div class="form-multi-select-display">${app.permission || '请选择权限'}</div>
+                                <svg class="form-multi-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
+                                <div class="form-multi-select-options"></div>
+                                <input type="hidden" id="editPermission" value="${app.permission || ''}">
                             </div>
-                            <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
-                                <label class="form-label">描述</label>
-                                <textarea class="form-textarea" id="editDesp" placeholder="输入应用描述">${appDetails.description || ''}</textarea>
-                            </div>
-                            <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
-                                <label class="form-label">权限</label>
-                                <div class="form-multi-select-wrapper" id="editPermissionWrapper">
-                                    <div class="form-multi-select-display">${appDetails.permission || '请选择权限'}</div>
-                                    <svg class="form-multi-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
-                                    <div class="form-multi-select-options"></div>
-                                    <input type="hidden" id="editPermission" value="${appDetails.permission || ''}">
-                                </div>
-                            </div>
-                            <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
-                                <label class="form-label">回调URL</label>
-                                <input type="text" class="form-input" id="editCallbackUrl" value="${appDetails.callbackUrl || ''}" placeholder="输入回调URL">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">登录条件表达式</label>
-                                <input type="text" class="form-input" id="editRequire" value="${appDetails.require || ''}" placeholder="输入登录条件表达式（以,分隔，如: basic,email）">
-                            </div>
-                            <div class="form-buttons">
+                        </div>
+                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
+                            <label class="form-label">回调URL</label>
+                            <input type="text" class="form-input" id="editCallbackUrl" value="${app.callbackUrl || ''}" placeholder="输入回调URL">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">登录条件表达式</label>
+                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入登录条件表达式（以,分隔，如: basic,email）">
+                        </div>
+                        <div class="form-buttons">
                                 <button class="form-btn form-btn-cancel" onclick="closeModifyAppKeyForm()">取消</button>
                                 <button class="form-btn form-btn-primary" onclick="modifyAppKey('${appID}')">保存</button>
                             </div>
@@ -3364,14 +3334,13 @@
                     </div>
                 `;
                 document.body.appendChild(overlay);
-                
-                setTimeout(() => {
-                    if (!hasSpecialPerm) {
-                        const currentPerms = appDetails.permission ? appDetails.permission.split(',') : ['basic'];
-                        initMultiSelectPermissions('editPermissionWrapper', currentPerms);
-                    }
-                }, 100);
-            });
+            
+            setTimeout(() => {
+                if (!hasSpecialPerm) {
+                    const currentPerms = app.permission ? app.permission.split(',') : ['basic'];
+                    initMultiSelectPermissions('editPermissionWrapper', currentPerms);
+                }
+            }, 100);
         }
 
         function closeModifyAppKeyForm() {
@@ -3380,14 +3349,11 @@
         }
 
         async function modifyAppKey(appID) {
+            const app = currentAppList.find(a => a.appID === appID);
+            if (!app) return;
+
             const newSignKey = document.getElementById('editSignKey').value.trim();
             const require = document.getElementById('editRequire').value.trim();
-
-            const appDetails = await fetchAppDetails(appID);
-            if (!appDetails) {
-                showNotification('获取应用详情失败', 3000, 'error');
-                return;
-            }
 
             const requestBody = {
                 controlToken: controlKey,
@@ -3395,11 +3361,11 @@
                 appID
             };
 
-            if (newSignKey !== appDetails.signKey) {
+            if (newSignKey !== app.signKey) {
                 requestBody.newSignKey = newSignKey;
             }
             
-            if (require !== (appDetails.require || '')) {
+            if (require !== (app.require || '')) {
                 requestBody.require = require;
             }
 
@@ -3412,12 +3378,12 @@
 
                 const data = await response.json();
 
-                if (data.returnData && data.returnData.code === 200) {
+                if (data.success) {
                     showNotification('应用更新成功', 3000, 'success');
                     closeModifyAppKeyForm();
                     fetchAppList();
                 } else {
-                    showNotification(data.returnData?.content?.error || '更新失败', 3000, 'error');
+                    showNotification(data.error || '更新失败', 3000, 'error');
                 }
             } catch (error) {
                 console.error('Failed to update app:', error);
@@ -3440,11 +3406,11 @@
 
                     const data = await response.json();
 
-                    if (data.returnData && data.returnData.code === 200) {
+                    if (data.success) {
                         showNotification('应用删除成功', 3000, 'success');
                         fetchAppList();
                     } else {
-                        showNotification(data.returnData?.content?.error || '删除失败', 3000, 'error');
+                        showNotification(data.error || '删除失败', 3000, 'error');
                     }
                 } catch (error) {
                     console.error('Failed to delete app:', error);
