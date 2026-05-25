@@ -579,6 +579,11 @@
             line-height: 1.5;
         }
 
+        .empty-state-text,
+        .app-meta {
+            color: var(--text-secondary);
+        }
+
         .dialog-overlay {
             position: fixed;
             inset: 0;
@@ -902,6 +907,10 @@
             font-size: 14px;
             color: var(--text-primary);
             padding: 10px 20px;
+        }
+
+        .turnstile-status-text {
+            color: var(--text-secondary);
         }
 
         .turnstile-status.visible {
@@ -2435,6 +2444,14 @@
                         <div class="feature-card-divider"></div>
                         <div class="feature-card-desc">接收账户安全相关的邮件通知</div>
                     </div>
+                    <div class="feature-card" onclick="openFeatureDialog('data-table')">
+                        <div class="feature-card-header">
+                            <div class="feature-card-icon">📊</div>
+                            <div class="feature-card-title">数据表</div>
+                        </div>
+                        <div class="feature-card-divider"></div>
+                        <div class="feature-card-desc">查看和管理您的数据表</div>
+                    </div>
                 </div>
             `;
         }
@@ -2532,6 +2549,7 @@
 
             const featureData = {
                 'email-notify': { title: '邮件通知设置', content: '<p>邮件通知功能正在开发中...</p>' },
+                'data-table': { title: '数据表', content: '<div id="dataTableContent"></div>' },
                 'app-manage': { title: 'App 管理', content: '<div id="appManageContent"></div>' },
                 'tag-manage': { title: 'Tag 管理', content: '<div id="tagManageContent"></div>' },
                 'api-key': { title: 'API 密钥管理', content: '<p>API 密钥管理功能正在开发中...</p>' },
@@ -2549,6 +2567,8 @@
                 loadAppList();
             } else if (featureId === 'tag-manage') {
                 loadTagList();
+            } else if (featureId === 'data-table') {
+                loadDataTable();
             }
         }
 
@@ -2661,7 +2681,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        type: 'getAuthorizedApps',
+                        type: 'getUserApps',
                         controlKey: controlKey,
                         turnstileToken: turnstileToken
                     })
@@ -2841,6 +2861,96 @@
         function logout() {
             document.cookie = 'controlKey=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';
             window.location.href = '../account/login.html?appID=dashboard';
+        }
+
+        async function loadDataTable() {
+            const content = document.getElementById('dataTableContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="app-list-container">
+                    <div class="app-list-header">
+                        <div class="app-list-title">数据表管理</div>
+                    </div>
+                    <div id="dataTableContainer">
+                        <button class="app-show-list-btn" onclick="showDataTableTurnstile()">显示数据表</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showDataTableTurnstile() {
+            const container = document.getElementById('dataTableContainer');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="turnstile-container" id="turnstileContainer">
+                    <div class="turnstile-status visible processing" id="turnstileStatus">
+                        <div class="turnstile-status-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                        <span class="turnstile-status-text">正在进行人机验证</span>
+                    </div>
+                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onDataTableTurnstileSuccess" data-error-callback="onDataTableTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                </div>
+            `;
+
+            if (typeof turnstile !== 'undefined') {
+                turnstile.render('#turnstileWidget', {
+                    sitekey: '0x4AAAAAADSh9NZeszpOAll6',
+                    callback: onDataTableTurnstileSuccess,
+                    'error-callback': onDataTableTurnstileError,
+                    'expired-callback': onDataTableTurnstileExpired,
+                    theme: 'light'
+                });
+            }
+        }
+
+        let dataTableTurnstileToken = '';
+
+        function onDataTableTurnstileSuccess(token) {
+            dataTableTurnstileToken = token;
+            showTurnstileStatus('success', '人机验证完成');
+            fetchDataTableList();
+        }
+
+        function onDataTableTurnstileError() {
+            dataTableTurnstileToken = '';
+            showTurnstileStatus('error', '人机验证失败');
+        }
+
+        function onDataTableTurnstileExpired() {
+            dataTableTurnstileToken = '';
+            showTurnstileStatus('error', '验证已过期');
+        }
+
+        async function fetchDataTableList() {
+            if (!dataTableTurnstileToken) {
+                showNotification('请先完成人机验证', 3000, 'error');
+                return;
+            }
+
+            try {
+                const container = document.getElementById('dataTableContainer');
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <div class="empty-state-text">数据表功能正在开发中...</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Failed to fetch data tables:', error);
+                showNotification('获取数据表列表失败', 3000, 'error');
+            }
         }
 
         async function loadAppList() {
@@ -3181,9 +3291,18 @@
             }
         }
 
+        function hasSpecialPermission(requireStr) {
+            if (!requireStr) return false;
+            const allowedPerms = ['basic', 'email'];
+            const requireItems = requireStr.split(',').map(s => s.trim()).filter(Boolean);
+            return requireItems.some(item => !allowedPerms.includes(item));
+        }
+
         function showModifyAppKeyForm(appID) {
             const app = currentAppList.find(a => a.appID === appID);
             if (!app) return;
+
+            const hasSpecialPerm = hasSpecialPermission(app.require);
 
             const overlay = document.createElement('div');
             overlay.className = 'form-overlay active';
@@ -3192,6 +3311,11 @@
                 <div class="form-container">
                     <div class="form-inner">
                         <h3 class="form-title">编辑应用 - ${appID}</h3>
+                        ${hasSpecialPerm ? `
+                        <div style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px; color: var(--text-primary);">
+                            <strong>注意：</strong>由于此应用包含特殊权限设置，如要修改权限请联系客服。当前仅允许修改密钥和登录限制。
+                        </div>
+                        ` : ''}
                         <div class="form-group">
                             <label class="form-label">签名密钥 (JWK格式RSA私钥)</label>
                             <div class="rsa-key-generator">
@@ -3202,11 +3326,11 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
                             <label class="form-label">描述</label>
                             <textarea class="form-textarea" id="editDesp" placeholder="输入应用描述">${app.Desp || ''}</textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
                             <label class="form-label">权限</label>
                             <div class="form-multi-select-wrapper" id="editPermissionWrapper">
                                 <div class="form-multi-select-display">${app.permission || '请选择权限'}</div>
@@ -3215,13 +3339,13 @@
                                 <input type="hidden" id="editPermission" value="${app.permission || ''}">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
                             <label class="form-label">回调URL</label>
                             <input type="text" class="form-input" id="editCallbackUrl" value="${app.callbackUrl || ''}" placeholder="输入回调URL">
                         </div>
                         <div class="form-group">
                             <label class="form-label">登录条件表达式</label>
-                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入登录条件表达式">
+                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入登录条件表达式（以,分隔，如: basic,email）">
                         </div>
                         <div class="form-group">
                             <div class="turnstile-container" id="editAppTurnstile">
@@ -3252,10 +3376,11 @@
             `;
             document.body.appendChild(overlay);
             
-            // 初始化权限选择器
             setTimeout(() => {
-                const currentPerms = app.permission ? app.permission.split(',') : ['basic'];
-                initMultiSelectPermissions('editPermissionWrapper', currentPerms);
+                if (!hasSpecialPerm) {
+                    const currentPerms = app.permission ? app.permission.split(',') : ['basic'];
+                    initMultiSelectPermissions('editPermissionWrapper', currentPerms);
+                }
                 renderTurnstile('editAppTurnstileWidget', onEditAppTurnstileSuccess);
             }, 100);
         }
@@ -3287,8 +3412,9 @@
             if (!app) return;
 
             const newSignKey = document.getElementById('editSignKey').value.trim();
-            const permission = document.getElementById('editPermission').value.trim();
             const require = document.getElementById('editRequire').value.trim();
+
+            const hasSpecialPerm = hasSpecialPermission(app.require);
 
             const requestBody = {
                 turnstileToken: appTurnstileToken,
@@ -3301,9 +3427,14 @@
             if (newSignKey !== app.signKey) {
                 requestBody.newSignKey = newSignKey;
             }
-            if (permission !== (app.permission || '')) {
-                requestBody.permission = permission || 'basic';
+            
+            if (!hasSpecialPerm) {
+                const permission = document.getElementById('editPermission').value.trim();
+                if (permission !== (app.permission || '')) {
+                    requestBody.permission = permission || 'basic';
+                }
             }
+            
             if (require !== (app.require || '')) {
                 requestBody.require = require;
             }
@@ -3617,7 +3748,6 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: tagTurnstileToken,
                         uid: userUid,
                         controlToken: controlKey,
                         type: 'updateTag',
