@@ -2682,7 +2682,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'getUserApps',
-                        controlKey: controlKey,
+                        controlToken: controlKey,
                         turnstileToken: turnstileToken
                     })
                 });
@@ -3504,77 +3504,19 @@
                         </div>
                     </div>
                     <div id="tagListContainer">
-                        <button class="tag-show-list-btn" onclick="showTagTurnstile()">显示列表</button>
+                        <button class="tag-show-list-btn" onclick="fetchTagList()">显示列表</button>
                     </div>
                 </div>
             `;
-        }
-
-        function showTagTurnstile() {
-            const container = document.getElementById('tagListContainer');
-            if (!container) return;
-
-            container.innerHTML = `
-                <div class="turnstile-container" id="turnstileContainer">
-                    <div class="turnstile-status visible processing" id="turnstileStatus">
-                        <div class="turnstile-status-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                <circle cx="12" cy="12" r="10"></circle>
-                            </svg>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </div>
-                        <span class="turnstile-status-text">正在进行人机验证</span>
-                    </div>
-                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onTagTurnstileSuccess" data-error-callback="onTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
-                </div>
-            `;
-
-            if (typeof turnstile !== 'undefined') {
-                turnstile.render('#turnstileWidget', {
-                    sitekey: '0x4AAAAAADSh9NZeszpOAll6',
-                    callback: onTagTurnstileSuccess,
-                    'error-callback': onTagTurnstileError,
-                    'expired-callback': onTagTurnstileExpired,
-                    theme: 'light'
-                });
-            }
-        }
-
-        function onTagTurnstileSuccess(token) {
-            tagTurnstileToken = token;
-            showTurnstileStatus('success', '人机验证完成');
-            fetchTagList();
-        }
-
-        function onTagTurnstileError() {
-            tagTurnstileToken = '';
-            showTurnstileStatus('error', '人机验证失败');
-        }
-
-        function onTagTurnstileExpired() {
-            tagTurnstileToken = '';
-            showTurnstileStatus('error', '验证已过期');
         }
 
         async function fetchTagList() {
-            if (!tagTurnstileToken) {
-                showNotification('请先完成人机验证', 3000, 'error');
-                return;
-            }
-
             try {
                 const userUid = getCookie('userUid');
                 const response = await fetch('https://account.838483.xyz/v6/tag', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: tagTurnstileToken,
                         uid: userUid,
                         controlToken: controlKey,
                         type: 'listUserTags'
@@ -3778,7 +3720,6 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            turnstileToken: tagTurnstileToken,
                             uid: userUid,
                             controlToken: controlKey,
                             type: 'deleteTag',
@@ -3817,26 +3758,6 @@
                             <label class="form-label">标签ID *</label>
                             <input type="text" class="form-input" id="addTagId" placeholder="输入标签ID">
                         </div>
-                        <div class="form-group">
-                            <div class="turnstile-container" id="addTagTurnstile">
-                                <div class="turnstile-status visible processing" id="addTagTurnstileStatus">
-                                    <div class="turnstile-status-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="turnstile-status-text">正在进行人机验证</span>
-                                </div>
-                                <div class="cf-turnstile" id="addTagTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onAddTagTurnstileSuccess" data-error-callback="onAddTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
-                            </div>
-                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeAddTagForUserForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="addTagForUser()">添加</button>
@@ -3845,31 +3766,11 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-            setTimeout(() => {
-                renderTurnstile('addTagTurnstileWidget', onAddTagTurnstileSuccess);
-            }, 100);
         }
 
         function closeAddTagForUserForm() {
             const overlay = document.getElementById('addTagForUserOverlay');
             if (overlay) overlay.remove();
-        }
-
-        function onAddTagTurnstileSuccess(token) {
-            tagTurnstileToken = token;
-            const statusEl = document.getElementById('addTagTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status success visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
-            }
-        }
-
-        function onAddTagTurnstileError() {
-            const statusEl = document.getElementById('addTagTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status error visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
-            }
         }
 
         function showEditTagForm(tagRecordUid, currentTagId) {
@@ -3884,26 +3785,6 @@
                             <label class="form-label">标签ID *</label>
                             <input type="text" class="form-input" id="editTagId" value="${currentTagId}" placeholder="输入标签ID">
                         </div>
-                        <div class="form-group">
-                            <div class="turnstile-container" id="editTagTurnstile">
-                                <div class="turnstile-status visible processing" id="editTagTurnstileStatus">
-                                    <div class="turnstile-status-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="turnstile-status-text">正在进行人机验证</span>
-                                </div>
-                                <div class="cf-turnstile" id="editTagTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onEditTagTurnstileSuccess" data-error-callback="onEditTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
-                            </div>
-                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeEditTagForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="editTag('${tagRecordUid}')">保存</button>
@@ -3912,31 +3793,11 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-            setTimeout(() => {
-                renderTurnstile('editTagTurnstileWidget', onEditTagTurnstileSuccess);
-            }, 100);
         }
 
         function closeEditTagForm() {
             const overlay = document.getElementById('editTagOverlay');
             if (overlay) overlay.remove();
-        }
-
-        function onEditTagTurnstileSuccess(token) {
-            tagTurnstileToken = token;
-            const statusEl = document.getElementById('editTagTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status success visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
-            }
-        }
-
-        function onEditTagTurnstileError() {
-            const statusEl = document.getElementById('editTagTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status error visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
-            }
         }
 
         async function editTag(tagRecordUid) {
@@ -3953,7 +3814,6 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: tagTurnstileToken,
                         uid: userUid,
                         controlToken: controlKey,
                         type: 'updateTag',
@@ -3992,7 +3852,6 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: tagTurnstileToken,
                         ownerUid: userUid,
                         controlToken: controlKey,
                         type: 'addTagForUser',
