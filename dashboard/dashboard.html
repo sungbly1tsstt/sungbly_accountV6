@@ -1437,6 +1437,31 @@
             font-size: 14px;
         }
 
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        .loading-text {
+            font-size: 14px;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .verify-btn {
             width: 100%;
             padding: 14px;
@@ -2960,90 +2985,36 @@
             content.innerHTML = `
                 <div class="app-list-container">
                     <div class="app-list-header">
-                        <div class="app-list-title">已注册的应用</div>
+                        <div class="app-list-title">已注册的应用 <span id="appCountDisplay" style="font-size: 14px; color: var(--text-secondary);"></span></div>
                         <button class="app-register-btn" onclick="showRegisterAppForm()">注册新应用</button>
                     </div>
                     <div id="appListContainer">
-                        <button class="app-show-list-btn" onclick="showAppTurnstile()">显示列表</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showAppTurnstile() {
-            const container = document.getElementById('appListContainer');
-            if (!container) return;
-
-            container.innerHTML = `
-                <div class="turnstile-container" id="turnstileContainer">
-                    <div class="turnstile-status visible processing" id="turnstileStatus">
-                        <div class="turnstile-status-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                <circle cx="12" cy="12" r="10"></circle>
-                            </svg>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">加载中...</div>
                         </div>
-                        <span class="turnstile-status-text">正在进行人机验证</span>
                     </div>
-                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onAppTurnstileSuccess" data-error-callback="onAppTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
                 </div>
             `;
-
-            if (typeof turnstile !== 'undefined') {
-                turnstile.render('#turnstileWidget', {
-                    sitekey: '0x4AAAAAADSh9NZeszpOAll6',
-                    callback: onAppTurnstileSuccess,
-                    'error-callback': onAppTurnstileError,
-                    'expired-callback': onAppTurnstileExpired,
-                    theme: 'light'
-                });
-            }
-        }
-
-        function onAppTurnstileSuccess(token) {
-            appTurnstileToken = token;
-            showTurnstileStatus('success', '人机验证完成');
             fetchAppList();
         }
 
-        function onAppTurnstileError() {
-            appTurnstileToken = '';
-            showTurnstileStatus('error', '人机验证失败');
-        }
-
-        function onAppTurnstileExpired() {
-            appTurnstileToken = '';
-            showTurnstileStatus('error', '验证已过期');
-        }
-
         async function fetchAppList() {
-            if (!appTurnstileToken) {
-                showNotification('请先完成人机验证', 3000, 'error');
-                return;
-            }
-
             try {
                 const response = await fetch('https://account.838483.xyz/v6/appid', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: appTurnstileToken,
                         controlToken: controlKey,
-                        action: 'listApps'
+                        action: 'getUserApps'
                     })
                 });
 
                 const data = await response.json();
                 const container = document.getElementById('appListContainer');
 
-                if (data.success && data.apps) {
-                    renderAppList(data.apps);
+                if (data.returnData && data.returnData.code === 200 && data.returnData.content && data.returnData.content.apps) {
+                    renderAppList(data.returnData.content.apps);
                 } else {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -3064,6 +3035,12 @@
         function renderAppList(apps) {
             currentAppList = apps;
             const container = document.getElementById('appListContainer');
+            const countDisplay = document.getElementById('appCountDisplay');
+            
+            if (countDisplay) {
+                countDisplay.textContent = `(${apps ? apps.length : 0}/9)`;
+            }
+            
             if (!apps || apps.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -3103,10 +3080,10 @@
                             <span class="detail-label">应用ID:</span>
                             <span class="detail-value">${app.appID}</span>
                         </div>
-                        ${app.Desp ? `
+                        ${app.description ? `
                         <div class="detail-item">
                             <span class="detail-label">描述:</span>
-                            <span class="detail-value">${app.Desp}</span>
+                            <span class="detail-value">${app.description}</span>
                         </div>
                         ` : ''}
                         ${app.permission ? `
@@ -3127,10 +3104,12 @@
                             <span class="detail-value">${app.require}</span>
                         </div>
                         ` : ''}
+                        ${app.signKey ? `
                         <div class="detail-item">
                             <span class="detail-label">签名密钥:</span>
                             <code class="detail-code">${app.signKey}</code>
                         </div>
+                        ` : ''}
                         <div class="form-buttons">
                             <button class="form-btn form-btn-secondary" onclick="closeAppDetail()">关闭</button>
                         </div>
@@ -3249,7 +3228,7 @@
         async function registerApp() {
             const appID = document.getElementById('registerAppId').value.trim();
             const signKey = document.getElementById('registerSignKey').value.trim();
-            const Desp = document.getElementById('registerDesp').value.trim();
+            const description = document.getElementById('registerDesp').value.trim();
             const permission = document.getElementById('registerPermission').value.trim();
             const callbackUrl = document.getElementById('registerCallbackUrl').value.trim();
             const require = document.getElementById('registerRequire').value.trim();
@@ -3269,7 +3248,7 @@
                         action: 'registerApp',
                         appID,
                         signKey,
-                        Desp,
+                        description,
                         permission: permission || 'basic',
                         callbackUrl,
                         require
@@ -3278,12 +3257,12 @@
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (data.returnData && data.returnData.code === 200) {
                     showNotification('应用注册成功', 3000, 'success');
                     closeRegisterAppForm();
                     fetchAppList();
                 } else {
-                    showNotification(data.error || '注册失败', 3000, 'error');
+                    showNotification(data.returnData?.content?.error || '注册失败', 3000, 'error');
                 }
             } catch (error) {
                 console.error('Failed to register app:', error);
@@ -3291,98 +3270,108 @@
             }
         }
 
-        function hasSpecialPermission(requireStr) {
-            if (!requireStr) return false;
+        function hasSpecialPermission(permissionStr) {
+            if (!permissionStr) return false;
             const allowedPerms = ['basic', 'email'];
-            const requireItems = requireStr.split(',').map(s => s.trim()).filter(Boolean);
-            return requireItems.some(item => !allowedPerms.includes(item));
+            const permissionItems = permissionStr.split(',').map(s => s.trim()).filter(Boolean);
+            return permissionItems.some(item => !allowedPerms.includes(item));
+        }
+
+        async function fetchAppDetails(appID) {
+            try {
+                const response = await fetch('https://account.838483.xyz/v6/appid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        controlToken: controlKey,
+                        action: 'getApp',
+                        appID
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData && data.returnData.code === 200 && data.returnData.content) {
+                    return data.returnData.content;
+                }
+                return null;
+            } catch (error) {
+                console.error('Failed to fetch app details:', error);
+                return null;
+            }
         }
 
         function showModifyAppKeyForm(appID) {
             const app = currentAppList.find(a => a.appID === appID);
             if (!app) return;
 
-            const hasSpecialPerm = hasSpecialPermission(app.require);
+            fetchAppDetails(appID).then(appDetails => {
+                if (!appDetails) {
+                    showNotification('获取应用详情失败', 3000, 'error');
+                    return;
+                }
 
-            const overlay = document.createElement('div');
-            overlay.className = 'form-overlay active';
-            overlay.id = 'modifyAppKeyOverlay';
-            overlay.innerHTML = `
-                <div class="form-container">
-                    <div class="form-inner">
-                        <h3 class="form-title">编辑应用 - ${appID}</h3>
-                        ${hasSpecialPerm ? `
-                        <div style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px; color: var(--text-primary);">
-                            <strong>注意：</strong>由于此应用包含特殊权限设置，如要修改权限请联系客服。当前仅允许修改密钥和登录限制。
-                        </div>
-                        ` : ''}
-                        <div class="form-group">
-                            <label class="form-label">签名密钥 (JWK格式RSA私钥)</label>
-                            <div class="rsa-key-generator">
-                                <textarea class="rsa-key-textarea" id="editSignKey" placeholder="输入新签名密钥">${app.signKey || ''}</textarea>
-                                <button class="rsa-generate-btn" onclick="generateRSAKey('editSignKey')">
-                                    <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-                                    生成
-                                </button>
+                const hasSpecialPerm = hasSpecialPermission(appDetails.permission);
+
+                const overlay = document.createElement('div');
+                overlay.className = 'form-overlay active';
+                overlay.id = 'modifyAppKeyOverlay';
+                overlay.innerHTML = `
+                    <div class="form-container">
+                        <div class="form-inner">
+                            <h3 class="form-title">编辑应用 - ${appID}</h3>
+                            ${hasSpecialPerm ? `
+                            <div style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px; color: var(--text-primary);">
+                                <strong>注意：</strong>由于此应用包含特殊权限设置，如要修改权限请联系客服。当前仅允许修改密钥和登录限制。同时modifyAppKey现在支持require参数，用于修改登录限制。
                             </div>
-                        </div>
-                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
-                            <label class="form-label">描述</label>
-                            <textarea class="form-textarea" id="editDesp" placeholder="输入应用描述">${app.Desp || ''}</textarea>
-                        </div>
-                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
-                            <label class="form-label">权限</label>
-                            <div class="form-multi-select-wrapper" id="editPermissionWrapper">
-                                <div class="form-multi-select-display">${app.permission || '请选择权限'}</div>
-                                <svg class="form-multi-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
-                                <div class="form-multi-select-options"></div>
-                                <input type="hidden" id="editPermission" value="${app.permission || ''}">
-                            </div>
-                        </div>
-                        <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
-                            <label class="form-label">回调URL</label>
-                            <input type="text" class="form-input" id="editCallbackUrl" value="${app.callbackUrl || ''}" placeholder="输入回调URL">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">登录条件表达式</label>
-                            <input type="text" class="form-input" id="editRequire" value="${app.require || ''}" placeholder="输入登录条件表达式（以,分隔，如: basic,email）">
-                        </div>
-                        <div class="form-group">
-                            <div class="turnstile-container" id="editAppTurnstile">
-                                <div class="turnstile-status visible processing" id="editAppTurnstileStatus">
-                                    <div class="turnstile-status-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="turnstile-status-text">正在进行人机验证</span>
+                            ` : ''}
+                            <div class="form-group">
+                                <label class="form-label">签名密钥 (JWK格式RSA私钥)</label>
+                                <div class="rsa-key-generator">
+                                    <textarea class="rsa-key-textarea" id="editSignKey" placeholder="输入新签名密钥">${appDetails.signKey || ''}</textarea>
+                                    <button class="rsa-generate-btn" onclick="generateRSAKey('editSignKey')">
+                                        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                                        生成
+                                    </button>
                                 </div>
-                                <div class="cf-turnstile" id="editAppTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onEditAppTurnstileSuccess" data-error-callback="onEditAppTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
                             </div>
-                        </div>
-                        <div class="form-buttons">
-                            <button class="form-btn form-btn-cancel" onclick="closeModifyAppKeyForm()">取消</button>
-                            <button class="form-btn form-btn-primary" onclick="modifyAppKey('${appID}')">保存</button>
+                            <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
+                                <label class="form-label">描述</label>
+                                <textarea class="form-textarea" id="editDesp" placeholder="输入应用描述">${appDetails.description || ''}</textarea>
+                            </div>
+                            <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
+                                <label class="form-label">权限</label>
+                                <div class="form-multi-select-wrapper" id="editPermissionWrapper">
+                                    <div class="form-multi-select-display">${appDetails.permission || '请选择权限'}</div>
+                                    <svg class="form-multi-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
+                                    <div class="form-multi-select-options"></div>
+                                    <input type="hidden" id="editPermission" value="${appDetails.permission || ''}">
+                                </div>
+                            </div>
+                            <div class="form-group" ${hasSpecialPerm ? 'style="display: none;"' : ''}>
+                                <label class="form-label">回调URL</label>
+                                <input type="text" class="form-input" id="editCallbackUrl" value="${appDetails.callbackUrl || ''}" placeholder="输入回调URL">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">登录条件表达式</label>
+                                <input type="text" class="form-input" id="editRequire" value="${appDetails.require || ''}" placeholder="输入登录条件表达式（以,分隔，如: basic,email）">
+                            </div>
+                            <div class="form-buttons">
+                                <button class="form-btn form-btn-cancel" onclick="closeModifyAppKeyForm()">取消</button>
+                                <button class="form-btn form-btn-primary" onclick="modifyAppKey('${appID}')">保存</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-            document.body.appendChild(overlay);
-            
-            setTimeout(() => {
-                if (!hasSpecialPerm) {
-                    const currentPerms = app.permission ? app.permission.split(',') : ['basic'];
-                    initMultiSelectPermissions('editPermissionWrapper', currentPerms);
-                }
-                renderTurnstile('editAppTurnstileWidget', onEditAppTurnstileSuccess);
-            }, 100);
+                `;
+                document.body.appendChild(overlay);
+                
+                setTimeout(() => {
+                    if (!hasSpecialPerm) {
+                        const currentPerms = appDetails.permission ? appDetails.permission.split(',') : ['basic'];
+                        initMultiSelectPermissions('editPermissionWrapper', currentPerms);
+                    }
+                }, 100);
+            });
         }
 
         function closeModifyAppKeyForm() {
@@ -3390,52 +3379,27 @@
             if (overlay) overlay.remove();
         }
 
-        function onEditAppTurnstileSuccess(token) {
-            appTurnstileToken = token;
-            const statusEl = document.getElementById('editAppTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status success visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
-            }
-        }
-
-        function onEditAppTurnstileError() {
-            const statusEl = document.getElementById('editAppTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status error visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
-            }
-        }
-
         async function modifyAppKey(appID) {
-            const app = currentAppList.find(a => a.appID === appID);
-            if (!app) return;
-
             const newSignKey = document.getElementById('editSignKey').value.trim();
             const require = document.getElementById('editRequire').value.trim();
 
-            const hasSpecialPerm = hasSpecialPermission(app.require);
+            const appDetails = await fetchAppDetails(appID);
+            if (!appDetails) {
+                showNotification('获取应用详情失败', 3000, 'error');
+                return;
+            }
 
             const requestBody = {
-                turnstileToken: appTurnstileToken,
                 controlToken: controlKey,
-                action: 'updateApp',
+                action: 'modifyAppKey',
                 appID
             };
 
-            // 只包含修改了的字段
-            if (newSignKey !== app.signKey) {
+            if (newSignKey !== appDetails.signKey) {
                 requestBody.newSignKey = newSignKey;
             }
             
-            if (!hasSpecialPerm) {
-                const permission = document.getElementById('editPermission').value.trim();
-                if (permission !== (app.permission || '')) {
-                    requestBody.permission = permission || 'basic';
-                }
-            }
-            
-            if (require !== (app.require || '')) {
+            if (require !== (appDetails.require || '')) {
                 requestBody.require = require;
             }
 
@@ -3448,12 +3412,12 @@
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (data.returnData && data.returnData.code === 200) {
                     showNotification('应用更新成功', 3000, 'success');
                     closeModifyAppKeyForm();
                     fetchAppList();
                 } else {
-                    showNotification(data.error || '更新失败', 3000, 'error');
+                    showNotification(data.returnData?.content?.error || '更新失败', 3000, 'error');
                 }
             } catch (error) {
                 console.error('Failed to update app:', error);
@@ -3468,7 +3432,6 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            turnstileToken: appTurnstileToken,
                             controlToken: controlKey,
                             action: 'deleteApp',
                             appID
@@ -3477,11 +3440,11 @@
 
                     const data = await response.json();
 
-                    if (data.success) {
+                    if (data.returnData && data.returnData.code === 200) {
                         showNotification('应用删除成功', 3000, 'success');
                         fetchAppList();
                     } else {
-                        showNotification(data.error || '删除失败', 3000, 'error');
+                        showNotification(data.returnData?.content?.error || '删除失败', 3000, 'error');
                     }
                 } catch (error) {
                     console.error('Failed to delete app:', error);
@@ -3497,17 +3460,21 @@
             content.innerHTML = `
                 <div class="tag-list-container">
                     <div class="tag-list-header">
-                        <div class="tag-list-title">已创建的标签</div>
+                        <div class="tag-list-title">已创建的标签 <span id="tagCountDisplay" style="font-size: 14px; color: var(--text-secondary);"></span></div>
                         <div class="tag-actions">
                             <button class="tag-register-btn" onclick="showRegisterTagForm()">创建标签</button>
                             <button class="tag-add-user-btn" onclick="showAddTagForUserForm()">为他人添加</button>
                         </div>
                     </div>
                     <div id="tagListContainer">
-                        <button class="tag-show-list-btn" onclick="fetchTagList()">显示列表</button>
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">加载中...</div>
+                        </div>
                     </div>
                 </div>
             `;
+            fetchTagList();
         }
 
         async function fetchTagList() {
@@ -3545,6 +3512,12 @@
         function renderTagList(tags) {
             currentTagList = tags;
             const container = document.getElementById('tagListContainer');
+            const countDisplay = document.getElementById('tagCountDisplay');
+            
+            if (countDisplay) {
+                countDisplay.textContent = `(${tags ? tags.length : 0}/27)`;
+            }
+            
             if (!tags || tags.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
