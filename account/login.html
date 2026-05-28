@@ -616,6 +616,7 @@
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s;
+            position: relative;
         }
 
         .account-item:hover {
@@ -640,21 +641,148 @@
             font-size: 16px;
             font-weight: 600;
             margin-right: 14px;
+            flex-shrink: 0;
         }
 
         .account-info {
             flex: 1;
+            min-width: 0;
         }
 
         .account-name {
             font-size: 14px;
             font-weight: 500;
             color: var(--text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .account-email {
             font-size: 12px;
             color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-delete-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-left: 8px;
+            opacity: 0.5;
+        }
+
+        .account-delete-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
+            opacity: 1;
+        }
+
+        .account-delete-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-light);
+            transition: fill 0.2s;
+        }
+
+        .account-delete-btn:hover svg {
+            fill: #ef4444;
+        }
+
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirm-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .confirm-dialog {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 12px 40px var(--glass-shadow);
+            min-width: 360px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .confirm-overlay.active .confirm-dialog {
+            transform: scale(1);
+        }
+
+        .confirm-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+
+        .confirm-message {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .confirm-btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .confirm-btn-cancel {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--glass-border);
+        }
+
+        .confirm-btn-cancel:hover {
+            background: var(--glass-border);
+        }
+
+        .confirm-btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .confirm-btn-danger:hover {
+            background: #dc2626;
         }
 
         .add-account {
@@ -1081,105 +1209,7 @@
             <div id="quick-login-form" class="quick-mode hidden">
                 <div class="logo-title">一键登录</div>
                 <div class="account-list-container">
-                    <div class="account-list">
-                        <div class="account-item" onclick="selectAccount('user1', event)">
-                            <div class="account-icon">U</div>
-                            <div class="account-info">
-                                <div class="account-name">用户A</div>
-                                <div class="account-email">userA@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user2', event)">
-                            <div class="account-icon">T</div>
-                            <div class="account-info">
-                                <div class="account-name">测试账号</div>
-                                <div class="account-email">test@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user3', event)">
-                            <div class="account-icon">A</div>
-                            <div class="account-info">
-                                <div class="account-name">管理员</div>
-                                <div class="account-email">admin@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user4', event)">
-                            <div class="account-icon">D</div>
-                            <div class="account-info">
-                                <div class="account-name">开发者</div>
-                                <div class="account-email">dev@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user5', event)">
-                            <div class="account-icon">V</div>
-                            <div class="account-info">
-                                <div class="account-name">访客账号</div>
-                                <div class="account-email">visitor@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user6', event)">
-                            <div class="account-icon">E</div>
-                            <div class="account-info">
-                                <div class="account-name">员工账号</div>
-                                <div class="account-email">employee@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user7', event)">
-                            <div class="account-icon">S</div>
-                            <div class="account-info">
-                                <div class="account-name">学生账号</div>
-                                <div class="account-email">student@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user8', event)">
-                            <div class="account-icon">G</div>
-                            <div class="account-info">
-                                <div class="account-name">Guest</div>
-                                <div class="account-email">guest@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user9', event)">
-                            <div class="account-icon">M</div>
-                            <div class="account-info">
-                                <div class="account-name">会员账号</div>
-                                <div class="account-email">member@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user10', event)">
-                            <div class="account-icon">P</div>
-                            <div class="account-info">
-                                <div class="account-name">VIP账号</div>
-                                <div class="account-email">vip@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user11', event)">
-                            <div class="account-icon">W</div>
-                            <div class="account-info">
-                                <div class="account-name">网站管理员</div>
-                                <div class="account-email">webmaster@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user12', event)">
-                            <div class="account-icon">O</div>
-                            <div class="account-info">
-                                <div class="account-name">运营账号</div>
-                                <div class="account-email">operation@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user13', event)">
-                            <div class="account-icon">C</div>
-                            <div class="account-info">
-                                <div class="account-name">客服账号</div>
-                                <div class="account-email">customer@example.com</div>
-                            </div>
-                        </div>
-                        <div class="account-item" onclick="selectAccount('user14', event)">
-                            <div class="account-icon">Q</div>
-                            <div class="account-info">
-                                <div class="account-name">测试员</div>
-                                <div class="account-email">qa@example.com</div>
-                            </div>
-                        </div>
+                    <div class="account-list" id="quickLoginAccountList">
                     </div>
                 </div>
                 
@@ -1223,6 +1253,17 @@
             </svg>
         </div>
         <div class="timeout-message">连接超时</div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-dialog">
+            <h3 class="confirm-title">确认操作</h3>
+            <p class="confirm-message" id="confirmMessage">确定要执行此操作吗？</p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirm()">取消</button>
+                <button class="confirm-btn confirm-btn-danger" id="confirmOkBtn" onclick="execConfirm()">确认</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1476,10 +1517,163 @@
             const items = document.querySelectorAll('.account-item');
             items.forEach(item => item.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
+            selectedAccountId = accountId;
         }
 
         function addAccount() {
-            showNotification('添加新账号功能');
+            quickLoginForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            quickLoginToggle.style.display = 'inline-block';
+        }
+
+        let selectedAccountId = null;
+        let confirmCallback = null;
+
+        function getQuickLoginAccounts() {
+            const accountsStr = getCookie('quickLoginAccounts');
+            if (accountsStr) {
+                try {
+                    return JSON.parse(decodeURIComponent(accountsStr));
+                } catch (e) {
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        function saveQuickLoginAccounts(accounts) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (365 * 24 * 60 * 60 * 1000));
+            document.cookie = 'quickLoginAccounts=' + encodeURIComponent(JSON.stringify(accounts)) + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+
+        function renderQuickLoginAccounts() {
+            const accounts = getQuickLoginAccounts();
+            const container = document.getElementById('quickLoginAccountList');
+            
+            if (!container) return;
+
+            if (accounts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-light);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">👤</div>
+                        <div style="font-size: 14px;">暂无保存的账户</div>
+                        <div style="font-size: 12px; margin-top: 8px;">登录后账户将自动保存</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = accounts.map((account, index) => `
+                <div class="account-item" onclick="selectAccount('${account.uid}', event)">
+                    <div class="account-icon">${(account.name || 'U').charAt(0).toUpperCase()}</div>
+                    <div class="account-info">
+                        <div class="account-name">${account.name || '未知用户'}</div>
+                        <div class="account-email">${account.email || 'UID: ' + account.uid}</div>
+                    </div>
+                    <button class="account-delete-btn" onclick="showDeleteConfirm('${account.uid}', '${account.name || '未知用户'}', event)" title="移除此账户">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function showDeleteConfirm(uid, name, event) {
+            event.stopPropagation();
+            const overlay = document.getElementById('confirmOverlay');
+            const messageEl = document.getElementById('confirmMessage');
+            messageEl.textContent = `确定要将账户 "${name}" 移出一键登录吗？`;
+            confirmCallback = () => deleteQuickLoginAccount(uid);
+            overlay.classList.add('active');
+        }
+
+        function closeConfirm() {
+            const overlay = document.getElementById('confirmOverlay');
+            overlay.classList.remove('active');
+            confirmCallback = null;
+        }
+
+        function execConfirm() {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            closeConfirm();
+        }
+
+        function deleteQuickLoginAccount(uid) {
+            let accounts = getQuickLoginAccounts();
+            accounts = accounts.filter(a => a.uid !== uid);
+            saveQuickLoginAccounts(accounts);
+            renderQuickLoginAccounts();
+            showNotification('账户已移除', 3000, 'success');
+            selectedAccountId = null;
+        }
+
+        async function performQuickLogin() {
+            if (!selectedAccountId) {
+                showNotification('请选择一个账户', 3000, 'error');
+                hideLoading(document.getElementById('quick-login-btn'));
+                return;
+            }
+
+            const accounts = getQuickLoginAccounts();
+            const account = accounts.find(a => a.uid === selectedAccountId);
+
+            if (!account) {
+                showNotification('账户不存在', 3000, 'error');
+                hideLoading(document.getElementById('quick-login-btn'));
+                return;
+            }
+
+            try {
+                const certObject = {
+                    uid: account.uid,
+                    name: account.name,
+                    appID: currentAppID || account.appID,
+                    certVersion: account.certVersion,
+                    sign: account.sign,
+                    more: account.more || {}
+                };
+
+                const certText = JSON.stringify(certObject);
+                const base64Cert = btoa(unescape(encodeURIComponent(certText)));
+
+                showNotification(`正在登录：${account.name}`, 1500, 'success');
+
+                if (appCallbackUrl && appCallbackUrl !== 'undefined') {
+                    let callbackUrl;
+                    try {
+                        let rawUrl = appCallbackUrl.trim();
+                        if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+                            if (rawUrl.startsWith('//')) {
+                                rawUrl = 'https:' + rawUrl;
+                            } else {
+                                rawUrl = 'https://' + rawUrl;
+                            }
+                        }
+                        const url = new URL(rawUrl);
+                        url.searchParams.set('cert', base64Cert);
+                        callbackUrl = url.toString();
+                    } catch (e) {
+                        console.error('Invalid URL, fallback to manual concat', e);
+                        let cleanUrl = appCallbackUrl.replace(/\?$/, '');
+                        const separator = cleanUrl.includes('?') ? '&' : '?';
+                        callbackUrl = `${cleanUrl}${separator}cert=${encodeURIComponent(base64Cert)}`;
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = callbackUrl;
+                    }, 1500);
+                } else {
+                    showNotification('登录成功！', 2000, 'success');
+                }
+            } catch (error) {
+                console.error('Quick login error:', error);
+                showNotification('登录失败', 3000, 'error');
+                hideLoading(document.getElementById('quick-login-btn'));
+            }
         }
 
         async function submitLogin() {
@@ -1621,6 +1815,7 @@
             loginForm.classList.add('hidden');
             quickLoginForm.classList.remove('hidden');
             quickLoginToggle.style.display = 'none';
+            renderQuickLoginAccounts();
         });
 
         cancelBtn.addEventListener('click', () => {
@@ -1684,8 +1879,9 @@
             await submitLogin();
         });
 
-        quickLoginBtn.addEventListener('click', () => {
+        quickLoginBtn.addEventListener('click', async () => {
             handleLoginClick(quickLoginBtn);
+            await performQuickLogin();
         });
 
         window.addEventListener('resize', function() {

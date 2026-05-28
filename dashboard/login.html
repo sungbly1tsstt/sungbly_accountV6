@@ -123,6 +123,34 @@
             document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
         }
 
+        function getQuickLoginAccounts() {
+            const accountsStr = getCookie('quickLoginAccounts');
+            if (accountsStr) {
+                try {
+                    return JSON.parse(decodeURIComponent(accountsStr));
+                } catch (e) {
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        function saveQuickLoginAccount(account) {
+            let accounts = getQuickLoginAccounts();
+            const existingIndex = accounts.findIndex(a => a.uid === account.uid);
+            if (existingIndex !== -1) {
+                accounts[existingIndex] = account;
+            } else {
+                accounts.unshift(account);
+            }
+            if (accounts.length > 10) {
+                accounts = accounts.slice(0, 10);
+            }
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (365 * 24 * 60 * 60 * 1000));
+            document.cookie = 'quickLoginAccounts=' + encodeURIComponent(JSON.stringify(accounts)) + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+
         async function processLogin() {
             const certParam = getUrlParam('cert');
             
@@ -147,6 +175,17 @@
                     if (cert.more.email) {
                         setCookie('userEmail', cert.more.email, 30);
                     }
+                    
+                    saveQuickLoginAccount({
+                        uid: cert.uid,
+                        name: cert.name,
+                        email: cert.more.email || '',
+                        controlToken: cert.more.controlToken,
+                        certVersion: cert.certVersion,
+                        sign: cert.sign,
+                        appID: cert.appID,
+                        more: cert.more
+                    });
                     
                     document.getElementById('spinner').style.display = 'none';
                     document.getElementById('successIcon').classList.add('show');

@@ -522,6 +522,130 @@
             fill: #ef4444;
         }
 
+        .account-switcher {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .account-switcher-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .account-switcher-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .account-switcher-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .account-switcher-item:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .account-switcher-item.active {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .account-switcher-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .account-switcher-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .account-switcher-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-switcher-email {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-switcher-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .account-switcher-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .account-switcher-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .account-switcher-btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .account-switcher-btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .account-switcher-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .account-switcher-btn-secondary {
+            background: var(--glass-border);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .account-switcher-btn-secondary:hover {
+            background: rgba(107, 114, 128, 0.2);
+        }
+
         .feature-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1462,6 +1586,169 @@
             to { transform: rotate(360deg); }
         }
 
+        .email-setting-container {
+            padding: 20px;
+        }
+
+        .email-notice-box {
+            text-align: center;
+            padding: 24px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .email-notice-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .email-notice-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .email-notice-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .email-notice-warning {
+            font-size: 13px;
+            color: #f59e0b;
+            background: rgba(251, 191, 36, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .email-form-group {
+            margin-bottom: 16px;
+        }
+
+        .email-form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .email-form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .email-form-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .email-btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .email-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .email-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .email-btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .email-btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .email-btn-secondary:hover {
+            border-color: var(--primary-color);
+        }
+
+        .email-registered-box {
+            text-align: center;
+            padding: 24px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+        }
+
+        .email-registered-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .email-registered-title {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .email-registered-address {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .email-registered-status {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .email-registered-notice {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .email-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 24px 0;
+        }
+
+        .webhook-section {
+            padding: 0;
+        }
+
+        .webhook-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .webhook-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
         .verify-btn {
             width: 100%;
             padding: 14px;
@@ -2261,6 +2548,12 @@
             return '';
         }
 
+        function setCookie(name, value, days = 30) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+
         function setTheme(theme) {
             document.body.className = 'theme-' + theme;
             currentTheme = theme;
@@ -2430,7 +2723,20 @@
                         <span class="user-info-value" id="userUid">加载中...</span>
                     </div>
                 </div>
+                <div class="account-switcher" id="accountSwitcher">
+                    <div class="account-switcher-title">账户切换</div>
+                    <div class="account-switcher-list" id="accountSwitcherList">
+                        <div class="loading-state" style="padding: 20px;">
+                            <div class="loading-spinner" style="width: 24px; height: 24px; margin: 0 auto 8px;"></div>
+                            <div class="loading-text" style="font-size: 12px;">加载账户列表...</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="action-buttons">
+                    <button class="action-btn" id="quickLoginToggleBtn" onclick="toggleCurrentAccountQuickLogin()">
+                        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <span>加载中...</span>
+                    </button>
                     <button class="action-btn action-btn-danger" onclick="showConfirm('确定要取消全部授权吗？此操作无法撤销。', revokeAllAuth)">
                         <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                         <span>取消全部授权</span>
@@ -2575,7 +2881,7 @@
             const content = document.getElementById('featureDialogContent');
 
             const featureData = {
-                'email-notify': { title: '邮件通知设置', content: '<p>邮件通知功能正在开发中...</p>' },
+                'email-notify': { title: '邮件设置', content: '<div id="emailNotifyContent"></div>' },
                 'data-table': { title: '数据表', content: '<div id="dataTableContent"></div>' },
                 'app-manage': { title: 'App 管理', content: '<div id="appManageContent"></div>' },
                 'tag-manage': { title: 'Tag 管理', content: '<div id="tagManageContent"></div>' },
@@ -2596,6 +2902,8 @@
                 loadTagList();
             } else if (featureId === 'data-table') {
                 loadDataTable();
+            } else if (featureId === 'email-notify') {
+                loadEmailNotify();
             }
         }
 
@@ -2612,10 +2920,168 @@
                 const emailFromCookie = getCookie('userEmail');
                 document.getElementById('userEmail').textContent = emailFromCookie || '未设置';
                 document.getElementById('userUid').textContent = getCookie('userUid') || '未知';
+                renderAccountSwitcher();
+                renderQuickLoginToggle();
             } catch (error) {
                 console.error('Failed to load user info:', error);
                 showNotification('获取用户信息失败', 3000, 'error');
             }
+        }
+
+        function getQuickLoginAccounts() {
+            const accountsStr = getCookie('quickLoginAccounts');
+            if (accountsStr) {
+                try {
+                    return JSON.parse(decodeURIComponent(accountsStr));
+                } catch (e) {
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        function saveQuickLoginAccounts(accounts) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (365 * 24 * 60 * 60 * 1000));
+            document.cookie = 'quickLoginAccounts=' + encodeURIComponent(JSON.stringify(accounts)) + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+
+        function isCurrentAccountInQuickLogin() {
+            const accounts = getQuickLoginAccounts();
+            const currentUid = getCookie('userUid');
+            return accounts.some(a => a.uid === currentUid);
+        }
+
+        function toggleCurrentAccountQuickLogin() {
+            const currentUid = getCookie('userUid');
+            const currentName = getCookie('userName');
+            const currentEmail = getCookie('userEmail');
+            const controlToken = getCookie('controlKey');
+
+            if (isCurrentAccountInQuickLogin()) {
+                showConfirm(`确定要将账户 "${currentName}" 移出自动登录吗？`, () => {
+                    let accounts = getQuickLoginAccounts();
+                    accounts = accounts.filter(a => a.uid !== currentUid);
+                    saveQuickLoginAccounts(accounts);
+                    renderQuickLoginToggle();
+                    renderAccountSwitcher();
+                    showNotification('已移出自动登录', 3000, 'success');
+                });
+            } else {
+                let accounts = getQuickLoginAccounts();
+                const newAccount = {
+                    uid: currentUid,
+                    name: currentName,
+                    email: currentEmail,
+                    controlToken: controlToken,
+                    more: {}
+                };
+                const existingIndex = accounts.findIndex(a => a.uid === currentUid);
+                if (existingIndex !== -1) {
+                    accounts[existingIndex] = newAccount;
+                } else {
+                    accounts.unshift(newAccount);
+                }
+                if (accounts.length > 10) {
+                    accounts = accounts.slice(0, 10);
+                }
+                saveQuickLoginAccounts(accounts);
+                renderQuickLoginToggle();
+                renderAccountSwitcher();
+                showNotification('已加入自动登录', 3000, 'success');
+            }
+        }
+
+        function renderQuickLoginToggle() {
+            const container = document.getElementById('quickLoginToggleBtn');
+            if (!container) return;
+
+            const isInQuickLogin = isCurrentAccountInQuickLogin();
+            container.innerHTML = `
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <span>${isInQuickLogin ? '将本账户移出自动登录' : '将本账户加入自动登录'}</span>
+            `;
+            container.className = isInQuickLogin ? 'action-btn action-btn-danger' : 'action-btn';
+            container.onclick = () => toggleCurrentAccountQuickLogin();
+        }
+
+        function renderAccountSwitcher() {
+            const container = document.getElementById('accountSwitcherList');
+            if (!container) return;
+
+            const accounts = getQuickLoginAccounts();
+            const currentUid = getCookie('userUid');
+
+            if (accounts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        <div style="font-size: 14px;">暂无其他账户</div>
+                        <div style="font-size: 12px; margin-top: 8px;">登录新账户后会自动添加</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = accounts.map(account => {
+                const isActive = account.uid === currentUid;
+                return `
+                    <div class="account-switcher-item ${isActive ? 'active' : ''}" onclick="switchToAccount('${account.uid}')">
+                        <div class="account-switcher-icon">${(account.name || 'U').charAt(0).toUpperCase()}</div>
+                        <div class="account-switcher-info">
+                            <div class="account-switcher-name">${account.name || '未知用户'}${isActive ? ' (当前)' : ''}</div>
+                            <div class="account-switcher-email">${account.email || 'UID: ' + account.uid}</div>
+                        </div>
+                        <div class="account-switcher-actions">
+                            ${isActive ? `
+                                <button class="account-switcher-btn account-switcher-btn-danger" onclick="event.stopPropagation(); removeFromQuickLogin('${account.uid}', '${account.name || '未知用户'}')">移除</button>
+                            ` : `
+                                <button class="account-switcher-btn account-switcher-btn-primary" onclick="event.stopPropagation(); switchToAccount('${account.uid}')">切换</button>
+                                <button class="account-switcher-btn account-switcher-btn-danger" onclick="event.stopPropagation(); removeFromQuickLogin('${account.uid}', '${account.name || '未知用户'}')">移除</button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function switchToAccount(uid) {
+            const accounts = getQuickLoginAccounts();
+            const account = accounts.find(a => a.uid === uid);
+            
+            if (!account) {
+                showNotification('账户不存在', 3000, 'error');
+                return;
+            }
+
+            setCookie('controlKey', account.controlToken, 30);
+            setCookie('userName', account.name, 30);
+            setCookie('userUid', account.uid, 30);
+            if (account.email) {
+                setCookie('userEmail', account.email, 30);
+            }
+            if (account.more) {
+                if (account.more.email) {
+                    setCookie('userEmail', account.more.email, 30);
+                }
+            }
+
+            controlKey = account.controlToken;
+            
+            showNotification(`已切换到账户：${account.name}`, 2000, 'success');
+            
+            setTimeout(() => {
+                loadUserInfo();
+            }, 500);
+        }
+
+        function removeFromQuickLogin(uid, name) {
+            showConfirm(`确定要将账户 "${name}" 移出一键登录吗？`, () => {
+                let accounts = getQuickLoginAccounts();
+                accounts = accounts.filter(a => a.uid !== uid);
+                saveQuickLoginAccounts(accounts);
+                renderAccountSwitcher();
+                showNotification('账户已移除', 3000, 'success');
+            });
         }
 
         async function loadAuthorizedApps() {
@@ -2888,6 +3354,186 @@
         function logout() {
             document.cookie = 'controlKey=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';
             window.location.href = '../account/login.html?appID=dashboard';
+        }
+
+        let mailAddressInfo = null;
+
+        async function loadEmailNotify() {
+            const content = document.getElementById('emailNotifyContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="email-setting-container">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">检查邮箱状态...</div>
+                    </div>
+                </div>
+            `;
+
+            await checkMailStatus();
+        }
+
+        async function checkMailStatus() {
+            const content = document.getElementById('emailNotifyContent');
+            if (!content) return;
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://mail.838483.xyz/account/mail', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'getStatus',
+                        uid: parseInt(userUid, 10)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData && data.returnData.code === 200 && data.returnData.content && data.returnData.content.address) {
+                    mailAddressInfo = data.returnData.content;
+                    renderMailRegistered(data.returnData.content);
+                } else {
+                    renderMailUnregistered();
+                }
+            } catch (error) {
+                console.error('Failed to check mail status:', error);
+                renderMailUnregistered();
+            }
+        }
+
+        function renderMailUnregistered() {
+            const content = document.getElementById('emailNotifyContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="email-setting-container">
+                    <div class="email-notice-box">
+                        <div class="email-notice-icon">📧</div>
+                        <div class="email-notice-title">注册邮箱地址</div>
+                        <div class="email-notice-desc">注册后可将邮箱地址绑定到您的账户，用于接收邮件通知。</div>
+                        <div class="email-notice-warning">⚠️ 注意：邮箱地址注册后无法修改，请谨慎填写。</div>
+                    </div>
+                    <div class="email-form-group">
+                        <label class="email-form-label">邮箱地址</label>
+                        <input type="email" class="email-form-input" id="mailAddressInput" placeholder="请输入邮箱地址">
+                    </div>
+                    <div class="email-btn-group">
+                        <button class="email-btn email-btn-primary" onclick="registerMailAddress()">注册邮箱</button>
+                        <button class="email-btn email-btn-secondary" onclick="window.open('https://mail.838483.xyz/mail', '_blank')">跳转到邮箱</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMailRegistered(mailInfo) {
+            const content = document.getElementById('emailNotifyContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="email-setting-container">
+                    <div class="email-registered-box">
+                        <div class="email-registered-icon">✅</div>
+                        <div class="email-registered-title">邮箱已注册</div>
+                        <div class="email-registered-address">${mailInfo.address}</div>
+                        <div class="email-registered-status">
+                            发送权限: ${mailInfo.canSend ? '已开启' : '已关闭'}
+                        </div>
+                        <div class="email-registered-notice">邮箱地址注册后无法修改</div>
+                    </div>
+                    <div class="email-divider"></div>
+                    <div class="webhook-section">
+                        <div class="webhook-title">Webhook 配置</div>
+                        <div class="webhook-desc">配置接收新邮件通知的 URL</div>
+                        <div class="email-form-group">
+                            <label class="email-form-label">Webhook URL</label>
+                            <input type="url" class="email-form-input" id="webhookUrlInput" placeholder="https://example.com/webhook" value="${mailInfo.hookUrl || ''}">
+                        </div>
+                        <div class="email-btn-group">
+                            <button class="email-btn email-btn-primary" onclick="saveWebhook()">保存 Webhook</button>
+                            <button class="email-btn email-btn-secondary" onclick="window.open('https://mail.838483.xyz/mail', '_blank')">跳转到邮箱</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function registerMailAddress() {
+            const address = document.getElementById('mailAddressInput').value.trim();
+
+            if (!address) {
+                showNotification('请输入邮箱地址', 3000, 'error');
+                return;
+            }
+
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(address)) {
+                showNotification('请输入有效的邮箱地址', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const cert = btoa(JSON.stringify({ uid: parseInt(userUid, 10) }));
+
+                const response = await fetch('https://mail.838483.xyz/account/mail', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'register',
+                        cert: cert,
+                        address: address
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData && data.returnData.code === 200) {
+                    showNotification('邮箱注册成功', 3000, 'success');
+                    await checkMailStatus();
+                } else {
+                    showNotification(data.returnData?.content?.error || '注册失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to register mail:', error);
+                showNotification('注册失败', 3000, 'error');
+            }
+        }
+
+        async function saveWebhook() {
+            const hookUrl = document.getElementById('webhookUrlInput').value.trim();
+
+            if (!hookUrl) {
+                showNotification('请输入 Webhook URL', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const cert = btoa(JSON.stringify({ uid: parseInt(userUid, 10) }));
+
+                const response = await fetch('https://mail.838483.xyz/account/mail', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'webHook',
+                        cert: cert,
+                        hookUrl: hookUrl
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData && data.returnData.code === 200) {
+                    showNotification('Webhook 保存成功', 3000, 'success');
+                } else {
+                    showNotification(data.returnData?.content?.error || '保存失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to save webhook:', error);
+                showNotification('保存失败', 3000, 'error');
+            }
         }
 
         async function loadDataTable() {
@@ -4094,9 +4740,29 @@
                 item.addEventListener('click', () => {
                     const targetId = item.dataset.target;
                     const newIndex = parseInt(item.dataset.index);
+                    history.pushState(null, '', '#' + targetId);
                     switchPanel(targetId, newIndex);
                 });
             });
+        }
+
+        function handleHashNavigation() {
+            const hash = window.location.hash.slice(1);
+            if (!hash) return false;
+
+            const hashToTarget = {
+                'account': { target: 'account', index: 0 },
+                'auth': { target: 'auth', index: 1 },
+                'features': { target: 'features', index: 2 },
+                'dev': { target: 'dev', index: 3 }
+            };
+
+            const navigation = hashToTarget[hash];
+            if (navigation) {
+                switchPanel(navigation.target, navigation.index);
+                return true;
+            }
+            return false;
         }
 
         window.onload = async function() {
@@ -4117,6 +4783,10 @@
             isInitialized = true;
 
             await loadUserInfo();
+
+            handleHashNavigation();
+
+            window.addEventListener('hashchange', handleHashNavigation);
         };
     </script>
 </body>
