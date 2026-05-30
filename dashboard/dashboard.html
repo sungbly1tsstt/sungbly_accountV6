@@ -3832,26 +3832,6 @@
                             <label class="form-label">登录条件表达式</label>
                             <input type="text" class="form-input" id="registerRequire" placeholder="输入登录条件表达式（为空则不限制）">
                         </div>
-                        <div class="form-group">
-                            <div class="turnstile-container" id="registerAppTurnstile">
-                                <div class="turnstile-status visible processing" id="registerAppTurnstileStatus">
-                                    <div class="turnstile-status-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="turnstile-status-text">正在进行人机验证</span>
-                                </div>
-                                <div class="cf-turnstile" id="registerAppTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onRegisterAppTurnstileSuccess" data-error-callback="onRegisterAppTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
-                            </div>
-                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeRegisterAppForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="registerApp()">注册</button>
@@ -3861,33 +3841,14 @@
             `;
             document.body.appendChild(overlay);
             
-            // 初始化权限选择器（默认选中basic）
             setTimeout(() => {
                 initMultiSelectPermissions('registerPermissionWrapper', ['basic']);
-                renderTurnstile('registerAppTurnstileWidget', onRegisterAppTurnstileSuccess);
             }, 100);
         }
 
         function closeRegisterAppForm() {
             const overlay = document.getElementById('registerAppOverlay');
             if (overlay) overlay.remove();
-        }
-
-        function onRegisterAppTurnstileSuccess(token) {
-            appTurnstileToken = token;
-            const statusEl = document.getElementById('registerAppTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status success visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
-            }
-        }
-
-        function onRegisterAppTurnstileError() {
-            const statusEl = document.getElementById('registerAppTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status error visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
-            }
         }
 
         async function registerApp() {
@@ -3908,7 +3869,6 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: appTurnstileToken,
                         controlToken: controlKey,
                         action: 'registerApp',
                         appID,
@@ -4189,26 +4149,6 @@
                             <label class="form-label">标签ID *</label>
                             <input type="text" class="form-input" id="registerTagId" placeholder="输入标签ID">
                         </div>
-                        <div class="form-group">
-                            <div class="turnstile-container" id="registerTagTurnstile">
-                                <div class="turnstile-status visible processing" id="registerTagTurnstileStatus">
-                                    <div class="turnstile-status-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="turnstile-status-text">正在进行人机验证</span>
-                                </div>
-                                <div class="cf-turnstile" id="registerTagTurnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onRegisterTagTurnstileSuccess" data-error-callback="onRegisterTagTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
-                            </div>
-                        </div>
                         <div class="form-buttons">
                             <button class="form-btn form-btn-cancel" onclick="closeRegisterTagForm()">取消</button>
                             <button class="form-btn form-btn-primary" onclick="registerTag()">创建</button>
@@ -4217,31 +4157,11 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-            setTimeout(() => {
-                renderTurnstile('registerTagTurnstileWidget', onRegisterTagTurnstileSuccess);
-            }, 100);
         }
 
         function closeRegisterTagForm() {
             const overlay = document.getElementById('registerTagOverlay');
             if (overlay) overlay.remove();
-        }
-
-        function onRegisterTagTurnstileSuccess(token) {
-            tagTurnstileToken = token;
-            const statusEl = document.getElementById('registerTagTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status success visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证完成';
-            }
-        }
-
-        function onRegisterTagTurnstileError() {
-            const statusEl = document.getElementById('registerTagTurnstileStatus');
-            if (statusEl) {
-                statusEl.className = 'turnstile-status error visible';
-                statusEl.querySelector('.turnstile-status-text').textContent = '验证失败';
-            }
         }
 
         async function registerTag() {
@@ -4258,7 +4178,6 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        turnstileToken: tagTurnstileToken,
                         uid: userUid,
                         controlToken: controlKey,
                         type: 'registerTag',
@@ -4481,9 +4400,6 @@
                 showNotification('添加失败', 3000, 'error');
             }
         }
-
-        let appTurnstileToken = '';
-        let tagTurnstileToken = '';
 
         function initCustomSelects() {
             document.addEventListener('click', (e) => {
