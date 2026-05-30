@@ -2723,13 +2723,19 @@
                         <span class="user-info-value" id="userUid">加载中...</span>
                     </div>
                 </div>
-                <div class="account-switcher" id="accountSwitcher">
+                <div class="account-switcher" id="accountSwitcher" style="margin-top: 24px;">
                     <div class="account-switcher-title">账户切换</div>
                     <div class="account-switcher-list" id="accountSwitcherList">
                         <div class="loading-state" style="padding: 20px;">
                             <div class="loading-spinner" style="width: 24px; height: 24px; margin: 0 auto 8px;"></div>
                             <div class="loading-text" style="font-size: 12px;">加载账户列表...</div>
                         </div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <button class="action-btn" onclick="window.location.href='../account/login.html?appID=dashboard'" style="width: 100%;">
+                            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            <span>添加账户</span>
+                        </button>
                     </div>
                 </div>
                 <div class="action-buttons">
@@ -2769,7 +2775,7 @@
             return `
                 <h2 class="panel-title">功能启用</h2>
                 <div class="feature-cards">
-                    <div class="feature-card" onclick="openFeatureDialog('email-notify')">
+                    <div class="feature-card" onclick="window.open('https://mail.838483.xyz/mail', '_blank')">
                         <div class="feature-card-header">
                             <div class="feature-card-icon">📧</div>
                             <div class="feature-card-title">邮件通知</div>
@@ -2777,10 +2783,10 @@
                         <div class="feature-card-divider"></div>
                         <div class="feature-card-desc">接收账户安全相关的邮件通知</div>
                     </div>
-                    <div class="feature-card" onclick="openFeatureDialog('data-table')">
+                    <div class="feature-card" onclick="window.location.href='dbManage.html'">
                         <div class="feature-card-header">
                             <div class="feature-card-icon">📊</div>
-                            <div class="feature-card-title">数据表</div>
+                            <div class="feature-card-title">存储服务</div>
                         </div>
                         <div class="feature-card-divider"></div>
                         <div class="feature-card-desc">查看和管理您的数据表</div>
