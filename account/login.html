@@ -1812,15 +1812,10 @@
         });
 
         quickLoginToggle.addEventListener('click', () => {
-            const overlay = document.getElementById('confirmOverlay');
-            const messageEl = document.getElementById('confirmMessage');
-            const titleEl = document.getElementById('confirmTitle');
-            titleEl.textContent = '提示';
-            messageEl.textContent = '请前往控制台 账户 页面中添加';
-            const cancelBtn = overlay.querySelector('.confirm-btn-cancel');
-            cancelBtn.textContent = '确定';
-            cancelBtn.onclick = () => overlay.classList.remove('active');
-            overlay.classList.add('active');
+            loginForm.classList.add('hidden');
+            quickLoginForm.classList.remove('hidden');
+            quickLoginToggle.style.display = 'none';
+            renderQuickLoginAccounts();
         });
 
         cancelBtn.addEventListener('click', () => {
