@@ -412,6 +412,24 @@
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
+        .content-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-panel::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
         .panel-title {
             font-size: 24px;
             font-weight: 600;
