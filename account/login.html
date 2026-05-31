@@ -1986,6 +1986,10 @@
         });
 
         quickLoginBtn.addEventListener('click', async () => {
+            if (!turnstileToken) {
+                showNotification('请等待turnstile完成', 3000, 'error');
+                return;
+            }
             handleLoginClick(quickLoginBtn);
             await performQuickLogin();
         });
