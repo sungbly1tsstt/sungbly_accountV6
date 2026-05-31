@@ -313,8 +313,7 @@
             overflow-x: hidden;
             margin-bottom: 15px;
             min-height: 0;
-            padding-right: 6px;
-            margin-right: -6px;
+            padding-right: 8px;
         }
 
         .logo-title {
@@ -1490,7 +1489,7 @@
           
           statusEls.forEach(statusEl => {
             if (statusEl) {
-              statusEl.className = `turnstile-status ${status} visible`;
+              statusEl.className = 'turnstile-status ' + status + ' visible';
               statusEl.querySelector('.turnstile-status-text').textContent = message;
             }
           });
@@ -1517,12 +1516,17 @@
         }
 
         function hideTurnstileStatus() {
-          const statusEl = document.getElementById('turnstileStatus');
+          const statusEls = [
+            document.getElementById('turnstileStatus'),
+            document.getElementById('quickTurnstileStatus')
+          ];
           const widgetEl = document.getElementById('turnstileWidget');
           
-          if (statusEl) {
-            statusEl.classList.remove('visible');
-          }
+          statusEls.forEach(statusEl => {
+            if (statusEl) {
+              statusEl.classList.remove('visible');
+            }
+          });
           
           if (widgetEl) {
             widgetEl.style.display = 'block';
