@@ -165,7 +165,7 @@
             }
 
             try {
-                const certText = decodeURIComponent(escape(atob(certParam)));
+                const certText = new TextDecoder().decode(Uint8Array.from(atob(certParam), c => c.charCodeAt(0)));
                 const cert = JSON.parse(certText);
 
                 if (cert.more && cert.more.controlToken) {
@@ -193,7 +193,7 @@
                     document.getElementById('subtitle').textContent = '即将跳转到主页...';
 
                     setTimeout(() => {
-                        window.location.href = '../dashboard.html';
+                        window.location.href = 'dashboard.html';
                     }, 1500);
                 } else {
                     document.getElementById('title').textContent = '错误';

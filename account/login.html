@@ -1121,6 +1121,11 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body class="theme-blue">
+    <!-- Hidden Turnstile Container for shared usage -->
+    <div class="turnstile-wrapper" id="turnstileWrapper" style="display: none;">
+        <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+    </div>
+
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-content collapsed" id="loadingContent">
@@ -1197,7 +1202,8 @@
                         </div>
                         <span class="turnstile-status-text">准备验证</span>
                     </div>
-                    <div class="cf-turnstile" id="turnstileWidget" data-sitekey="0x4AAAAAADSh9NZeszpOAll6" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError" data-appearance="interaction-only" data-size="flexible"></div>
+                    <!-- Turnstile widget will be dynamically inserted here -->
+                    <div id="turnstilePlaceholder"></div>
                 </div>
                 
                 <button class="btn" id="login-btn">
@@ -1211,10 +1217,30 @@
                 <div class="account-list-container">
                     <div class="account-list" id="quickLoginAccountList">
                     </div>
+                    
+                    <div class="add-account" onclick="addAccount()">
+                        <div class="add-icon">+</div>
+                    </div>
                 </div>
                 
-                <div class="add-account" onclick="addAccount()">
-                    <div class="add-icon">+</div>
+                <div class="turnstile-container" id="quickTurnstileContainer">
+                    <div class="turnstile-status" id="quickTurnstileStatus">
+                        <div class="turnstile-status-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-spinner">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                        <span class="turnstile-status-text">准备验证</span>
+                    </div>
+                    <!-- Turnstile widget will be dynamically inserted here -->
+                    <div id="quickTurnstilePlaceholder"></div>
                 </div>
                 
                 <div class="quick-btn-group">
@@ -1399,6 +1425,52 @@
           showTurnstileStatus('error', '验证已过期');
         }
 
+        // 移动turnstile组件到快速登录表单
+        function moveTurnstileToQuickLogin() {
+            const turnstileWidget = document.getElementById('turnstileWidget');
+            const quickPlaceholder = document.getElementById('quickTurnstilePlaceholder');
+            const normalPlaceholder = document.getElementById('turnstilePlaceholder');
+            
+            if (turnstileWidget && quickPlaceholder) {
+                if (turnstileWidget.parentElement !== quickPlaceholder) {
+                    // 从当前位置移除
+                    if (turnstileWidget.parentElement) {
+                        turnstileWidget.parentElement.removeChild(turnstileWidget);
+                    }
+                    // 添加到快速登录位置
+                    quickPlaceholder.appendChild(turnstileWidget);
+                }
+                // 显示turnstile容器
+                document.getElementById('quickTurnstileContainer').style.display = 'flex';
+                document.getElementById('turnstileContainer').style.display = 'none';
+                // 重置状态
+                showTurnstileStatus('pending', '准备验证');
+            }
+        }
+
+        // 移动turnstile组件到正常登录表单
+        function moveTurnstileToNormalLogin() {
+            const turnstileWidget = document.getElementById('turnstileWidget');
+            const normalPlaceholder = document.getElementById('turnstilePlaceholder');
+            const quickPlaceholder = document.getElementById('quickTurnstilePlaceholder');
+            
+            if (turnstileWidget && normalPlaceholder) {
+                if (turnstileWidget.parentElement !== normalPlaceholder) {
+                    // 从当前位置移除
+                    if (turnstileWidget.parentElement) {
+                        turnstileWidget.parentElement.removeChild(turnstileWidget);
+                    }
+                    // 添加到正常登录位置
+                    normalPlaceholder.appendChild(turnstileWidget);
+                }
+                // 显示turnstile容器
+                document.getElementById('turnstileContainer').style.display = 'flex';
+                document.getElementById('quickTurnstileContainer').style.display = 'none';
+                // 重置状态
+                showTurnstileStatus('pending', '准备验证');
+            }
+        }
+
         // 测试辅助函数 - 模拟验证成功（用于开发测试）
         function mockTurnstileSuccess() {
           turnstileToken = 'mock-token-' + Date.now();
@@ -1406,28 +1478,37 @@
         }
 
         function showTurnstileStatus(status, message) {
-          const statusEl = document.getElementById('turnstileStatus');
+          const statusEls = [
+            document.getElementById('turnstileStatus'),
+            document.getElementById('quickTurnstileStatus')
+          ];
           const widgetEl = document.getElementById('turnstileWidget');
-          const containerEl = document.getElementById('turnstileContainer');
+          const containerEls = [
+            document.getElementById('turnstileContainer'),
+            document.getElementById('quickTurnstileContainer')
+          ];
           
-          if (!statusEl) return;
-          
-          statusEl.className = `turnstile-status ${status} visible`;
-          statusEl.querySelector('.turnstile-status-text').textContent = message;
+          statusEls.forEach(statusEl => {
+            if (statusEl) {
+              statusEl.className = `turnstile-status ${status} visible`;
+              statusEl.querySelector('.turnstile-status-text').textContent = message;
+            }
+          });
           
           if (widgetEl) {
             widgetEl.style.display = 'none';
           }
           
-          if (containerEl) {
-            containerEl.classList.remove('flash-success', 'flash-error');
-            
-            if (status === 'success') {
-              setTimeout(() => {
-                containerEl.classList.add('flash-success');
-              }, 100);
-            } else if (status === 'error') {
-              setTimeout(() => {
+          containerEls.forEach(containerEl => {
+            if (containerEl) {
+              containerEl.classList.remove('flash-success', 'flash-error');
+              
+              if (status === 'success') {
+                setTimeout(() => {
+                  containerEl.classList.add('flash-success');
+                }, 100);
+              } else if (status === 'error') {
+                setTimeout(() => {
                 containerEl.classList.add('flash-error');
               }, 100);
             }
@@ -1916,12 +1997,14 @@
             quickLoginForm.classList.remove('hidden');
             quickLoginToggle.style.display = 'none';
             renderQuickLoginAccounts();
+            moveTurnstileToQuickLogin();
         });
 
         cancelBtn.addEventListener('click', () => {
             quickLoginForm.classList.add('hidden');
             loginForm.classList.remove('hidden');
             quickLoginToggle.style.display = 'inline-block';
+            moveTurnstileToNormalLogin();
         });
 
         feedbackBtn.addEventListener('click', () => {
@@ -2040,6 +2123,8 @@
 
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
+                    // Initialize turnstile position
+                    moveTurnstileToNormalLogin();
                     showTurnstileStatus('processing', '正在进行人机验证');
                 }, 600);
             }, 800);
