@@ -1509,10 +1509,11 @@
                 }, 100);
               } else if (status === 'error') {
                 setTimeout(() => {
-                containerEl.classList.add('flash-error');
-              }, 100);
+                  containerEl.classList.add('flash-error');
+                }, 100);
+              }
             }
-          }
+          });
         }
 
         function hideTurnstileStatus() {
