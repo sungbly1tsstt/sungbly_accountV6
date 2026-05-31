@@ -1810,32 +1810,34 @@
               const certText = JSON.stringify(certObject);
               const base64Cert = btoa(unescape(encodeURIComponent(certText)));
 
-              const accounts = getQuickLoginAccounts();
-              const existingIndex = accounts.findIndex(a => a.uid === result.uid);
-              if (existingIndex !== -1) {
-                accounts[existingIndex] = {
-                  uid: result.uid,
-                  name: result.name,
-                  email: result.more?.email || '',
-                  controlToken: result.more?.controlToken || '',
-                  certVersion: result.certVersion,
-                  sign: result.sign,
-                  appID: result.appID,
-                  more: result.more || {}
-                };
-              } else {
-                accounts.push({
-                  uid: result.uid,
-                  name: result.name,
-                  email: result.more?.email || '',
-                  controlToken: result.more?.controlToken || '',
-                  certVersion: result.certVersion,
-                  sign: result.sign,
-                  appID: result.appID,
-                  more: result.more || {}
-                });
+              if (currentAppID === 'dashboard' || result.appID === 'dashboard') {
+                const accounts = getQuickLoginAccounts();
+                const existingIndex = accounts.findIndex(a => a.uid === result.uid);
+                if (existingIndex !== -1) {
+                  accounts[existingIndex] = {
+                    uid: result.uid,
+                    name: result.name,
+                    email: result.more?.email || '',
+                    controlToken: result.more?.controlToken || '',
+                    certVersion: result.certVersion,
+                    sign: result.sign,
+                    appID: result.appID,
+                    more: result.more || {}
+                  };
+                } else {
+                  accounts.push({
+                    uid: result.uid,
+                    name: result.name,
+                    email: result.more?.email || '',
+                    controlToken: result.more?.controlToken || '',
+                    certVersion: result.certVersion,
+                    sign: result.sign,
+                    appID: result.appID,
+                    more: result.more || {}
+                  });
+                }
+                saveQuickLoginAccounts(accounts);
               }
-              saveQuickLoginAccounts(accounts);
 
               showNotification(`登录成功！用户：${result.name}`, 1500, 'success');
 
@@ -1918,6 +1920,10 @@
         });
 
         quickLoginToggle.addEventListener('click', () => {
+            if (!turnstileToken) {
+                showNotification('请等待turnstile完成', 3000, 'error');
+                return;
+            }
             loginForm.classList.add('hidden');
             quickLoginForm.classList.remove('hidden');
             quickLoginToggle.style.display = 'none';
