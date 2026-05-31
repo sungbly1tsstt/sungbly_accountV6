@@ -1730,7 +1730,33 @@
               const certText = JSON.stringify(certObject);
               const base64Cert = btoa(unescape(encodeURIComponent(certText)));
 
-              // 显示登录成功提示
+              const accounts = getQuickLoginAccounts();
+              const existingIndex = accounts.findIndex(a => a.uid === result.uid);
+              if (existingIndex !== -1) {
+                accounts[existingIndex] = {
+                  uid: result.uid,
+                  name: result.name,
+                  email: result.more?.email || '',
+                  controlToken: result.more?.controlToken || '',
+                  certVersion: result.certVersion,
+                  sign: result.sign,
+                  appID: result.appID,
+                  more: result.more || {}
+                };
+              } else {
+                accounts.push({
+                  uid: result.uid,
+                  name: result.name,
+                  email: result.more?.email || '',
+                  controlToken: result.more?.controlToken || '',
+                  certVersion: result.certVersion,
+                  sign: result.sign,
+                  appID: result.appID,
+                  more: result.more || {}
+                });
+              }
+              saveQuickLoginAccounts(accounts);
+
               showNotification(`登录成功！用户：${result.name}`, 1500, 'success');
 
               if (appCallbackUrl && appCallbackUrl !== 'undefined') {

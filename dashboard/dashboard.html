@@ -470,6 +470,35 @@
             font-weight: 500;
         }
 
+        .copy-token-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .copy-token-btn:hover {
+            background: var(--glass-border);
+        }
+
+        .copy-token-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+        }
+
+        .copy-token-btn:hover svg {
+            fill: var(--primary-color);
+        }
+
         .action-buttons {
             display: flex;
             flex-direction: column;
@@ -2733,6 +2762,13 @@
                         <span class="user-info-label">用户ID</span>
                         <span class="user-info-value" id="userUid">加载中...</span>
                     </div>
+                    <div class="user-info-item">
+                        <span class="user-info-label">ControlToken</span>
+                        <span class="user-info-value" id="userControlToken" style="font-family: monospace; letter-spacing: -0.5px;">••••••••</span>
+                        <button class="copy-token-btn" onclick="copyControlToken()" title="复制">
+                            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="account-switcher" id="accountSwitcher" style="margin-top: 24px;">
                     <div class="account-switcher-title">账户切换</div>
@@ -2937,12 +2973,54 @@
                 const emailFromCookie = getCookie('userEmail');
                 document.getElementById('userEmail').textContent = emailFromCookie || '未设置';
                 document.getElementById('userUid').textContent = getCookie('userUid') || '未知';
+                const ctrlToken = getCookie('controlKey') || '';
+                const maskedToken = ctrlToken.length > 8 ? ctrlToken.substring(0, 4) + '••••••••' + ctrlToken.substring(ctrlToken.length - 4) : '••••••••';
+                document.getElementById('userControlToken').textContent = maskedToken;
                 renderAccountSwitcher();
                 renderQuickLoginToggle();
             } catch (error) {
                 console.error('Failed to load user info:', error);
                 showNotification('获取用户信息失败', 3000, 'error');
             }
+        }
+
+        function copyControlToken() {
+            const ctrlToken = getCookie('controlKey') || '';
+            if (!ctrlToken) {
+                showNotification('ControlToken不存在', 3000, 'error');
+                return;
+            }
+            const overlay = document.getElementById('confirmOverlay');
+            const messageEl = document.getElementById('confirmMessage');
+            const titleEl = overlay.querySelector('.confirm-title');
+            const cancelBtn = overlay.querySelector('.confirm-btn-cancel');
+            const dangerBtn = overlay.querySelector('.confirm-btn-danger');
+            
+            titleEl.textContent = '安全警告';
+            messageEl.innerHTML = '泄露ControlToken将可以让他人获得你的账户完整权限，包括修改密码、登录等。<br><br><strong>你确定要拷贝吗？</strong>';
+            
+            cancelBtn.textContent = '取消';
+            cancelBtn.style.background = '';
+            cancelBtn.style.color = '';
+            cancelBtn.style.border = '';
+            cancelBtn.onclick = closeConfirm;
+            
+            dangerBtn.style.display = '';
+            dangerBtn.textContent = '确定拷贝';
+            dangerBtn.style.background = '#f59e0b';
+            dangerBtn.style.border = '1px solid #f59e0b';
+            
+            const doCopy = () => {
+                navigator.clipboard.writeText(ctrlToken).then(() => {
+                    showNotification('ControlToken已拷贝', 3000, 'success');
+                }).catch(() => {
+                    showNotification('拷贝失败', 3000, 'error');
+                });
+                closeConfirm();
+            };
+            
+            dangerBtn.onclick = doCopy;
+            overlay.classList.add('active');
         }
 
         function getQuickLoginAccounts() {
