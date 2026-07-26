@@ -2473,6 +2473,319 @@
         .form-btn-danger:hover {
             background: #dc2626;
         }
+
+        .redeem-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 4px 0;
+        }
+
+        .redeem-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .redeem-list-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .redeem-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .redeem-generate-btn,
+        .redeem-use-btn {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .redeem-generate-btn:hover,
+        .redeem-use-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .redeem-card {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .redeem-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px var(--glass-shadow);
+        }
+
+        .redeem-card-left {
+            flex: 1;
+        }
+
+        .redeem-card-code {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: monospace;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .redeem-card-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .redeem-card-right {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .redeem-card-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .redeem-card-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .redeem-card-btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .redeem-card-btn-secondary {
+            background: var(--glass-border);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .redeem-card-btn-secondary:hover {
+            background: rgba(107, 114, 128, 0.2);
+        }
+
+        .redeem-card-btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .redeem-card-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .redeem-card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-top: 4px;
+        }
+
+        .redeem-card-status.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .redeem-card-status.active::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .redeem-card-status.frozen {
+            background: rgba(251, 191, 36, 0.15);
+            color: #f59e0b;
+        }
+
+        .redeem-card-status.frozen::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #f59e0b;
+        }
+
+        .redeem-card-status.redeemed {
+            background: rgba(107, 114, 128, 0.15);
+            color: #6b7280;
+        }
+
+        .redeem-card-status.redeemed::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #6b7280;
+        }
+
+        .redeem-copy-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .redeem-copy-btn:hover {
+            background: var(--glass-border);
+        }
+
+        .redeem-copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+        }
+
+        .redeem-copy-btn:hover svg {
+            fill: var(--primary-color);
+        }
+
+        .redeem-code-display {
+            background: var(--input-bg);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            color: var(--text-primary);
+            word-break: break-all;
+            border: 1px solid var(--glass-border);
+            margin-top: 8px;
+        }
+
+        .redeem-tag-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .redeem-tag-select-display {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            user-select: none;
+        }
+
+        .redeem-tag-select-wrapper.active .redeem-tag-select-display {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .redeem-tag-select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+
+        .redeem-tag-select-wrapper.active .redeem-tag-select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .redeem-tag-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px var(--glass-shadow);
+            z-index: 10005;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .redeem-tag-select-options::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .redeem-tag-select-options::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        .redeem-tag-select-options::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .redeem-tag-select-wrapper.active .redeem-tag-select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .redeem-tag-select-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-radius: 8px;
+            margin: 4px;
+        }
+
+        .redeem-tag-select-option:hover {
+            background: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .redeem-tag-select-option.selected {
+            background: var(--primary-color);
+            color: white;
+        }
     </style>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
@@ -2862,6 +3175,14 @@
                         <div class="feature-card-divider"></div>
                         <div class="feature-card-desc">生成和管理应用标签</div>
                     </div>
+                    <div class="feature-card" onclick="openFeatureDialog('redeem-manage')">
+                        <div class="feature-card-header">
+                            <div class="feature-card-icon">🎫</div>
+                            <div class="feature-card-title">兑换码管理</div>
+                        </div>
+                        <div class="feature-card-divider"></div>
+                        <div class="feature-card-desc">生成和管理兑换码，用户可通过兑换码获取标签</div>
+                    </div>
                     <div class="feature-card" onclick="openFeatureDialog('api-key')">
                         <div class="feature-card-header">
                             <div class="feature-card-icon">🔑</div>
@@ -2938,6 +3259,7 @@
                 'data-table': { title: '数据表', content: '<div id="dataTableContent"></div>' },
                 'app-manage': { title: 'App 管理', content: '<div id="appManageContent"></div>' },
                 'tag-manage': { title: 'Tag 管理', content: '<div id="tagManageContent"></div>' },
+                'redeem-manage': { title: '兑换码管理', content: '<div id="redeemManageContent"></div>' },
                 'api-key': { title: 'API 密钥管理', content: '<p>API 密钥管理功能正在开发中...</p>' },
                 'webhook': { title: 'Webhook 配置', content: '<p>Webhook 配置功能正在开发中...</p>' }
             };
@@ -2953,6 +3275,8 @@
                 loadAppList();
             } else if (featureId === 'tag-manage') {
                 loadTagList();
+            } else if (featureId === 'redeem-manage') {
+                loadRedeemList();
             } else if (featureId === 'data-table') {
                 loadDataTable();
             } else if (featureId === 'email-notify') {
@@ -3449,6 +3773,423 @@
         function logout() {
             document.cookie = 'controlKey=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';
             window.location.href = '../account/login.html?appID=dashboard';
+        }
+
+        let currentRedeemList = [];
+
+        async function loadRedeemList() {
+            const content = document.getElementById('redeemManageContent');
+            if (!content) return;
+
+            content.innerHTML = `
+                <div class="redeem-list-container">
+                    <div class="redeem-list-header">
+                        <div class="redeem-list-title">我的兑换码 <span id="redeemCountDisplay" style="font-size: 14px; color: var(--text-secondary);"></span></div>
+                        <div class="redeem-actions">
+                            <button class="redeem-generate-btn" onclick="showGenerateCodesForm()">批量生成</button>
+                            <button class="redeem-use-btn" onclick="showRedeemCodeForm()">兑换码</button>
+                        </div>
+                    </div>
+                    <div id="redeemListContainer">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">加载中...</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            fetchRedeemCodes();
+        }
+
+        async function fetchRedeemCodes() {
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/redeem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'listCodes',
+                        uid: parseInt(userUid, 10),
+                        controlToken: controlKey
+                    })
+                });
+
+                const data = await response.json();
+                const container = document.getElementById('redeemListContainer');
+
+                if (data.returnData.code === 200 && data.returnData.content.codes) {
+                    renderRedeemList(data.returnData.content.codes);
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🎫</div>
+                            <div class="empty-state-text">暂无兑换码</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to fetch redeem codes:', error);
+                showNotification('获取兑换码列表失败', 3000, 'error');
+            }
+        }
+
+        function getRedeemStatusText(active) {
+            if (active === 1) return { text: '可兑换', class: 'active' };
+            if (active === 0) return { text: '已冻结', class: 'frozen' };
+            return { text: '已兑换', class: 'redeemed' };
+        }
+
+        function renderRedeemList(codes) {
+            currentRedeemList = codes;
+            const container = document.getElementById('redeemListContainer');
+            const countDisplay = document.getElementById('redeemCountDisplay');
+
+            if (countDisplay) {
+                countDisplay.textContent = `(${codes ? codes.length : 0})`;
+            }
+
+            if (!codes || codes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎫</div>
+                        <div class="empty-state-text">暂无兑换码</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = codes.map(code => {
+                const status = getRedeemStatusText(code.active);
+                return `
+                    <div class="redeem-card">
+                        <div class="redeem-card-left">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="redeem-card-code">${code.code}</div>
+                                <button class="redeem-copy-btn" onclick="copyRedeemCode('${code.code}')" title="复制">
+                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                </button>
+                            </div>
+                            <div class="redeem-card-meta">关联标签UID: ${code.redeemTagUid} | 兑换码ID: ${code.codeUid}</div>
+                            <div class="redeem-card-status ${status.class}">${status.text}</div>
+                        </div>
+                        <div class="redeem-card-right">
+                            ${code.active === 1 ? `
+                                <button class="redeem-card-btn redeem-card-btn-secondary" onclick="freezeCode(${code.codeUid})">冻结</button>
+                            ` : code.active === 0 ? `
+                                <button class="redeem-card-btn redeem-card-btn-primary" onclick="unfreezeCode(${code.codeUid})">解冻</button>
+                            ` : ''}
+                            <button class="redeem-card-btn redeem-card-btn-danger" onclick="deleteCode(${code.codeUid})">删除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function copyRedeemCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification('兑换码已复制', 2000, 'success');
+            }).catch(() => {
+                showNotification('复制失败', 2000, 'error');
+            });
+        }
+
+        async function showGenerateCodesForm() {
+            const userUid = getCookie('userUid');
+            let tags = [];
+            try {
+                const response = await fetch('https://account.838483.xyz/v6/tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        uid: userUid,
+                        controlToken: controlKey,
+                        type: 'listUserTags'
+                    })
+                });
+                const data = await response.json();
+                if (data.returnData.code === 200 && data.returnData.content.tags) {
+                    tags = data.returnData.content.tags;
+                }
+            } catch (e) {
+                console.error('Failed to fetch tags:', e);
+            }
+
+            if (tags.length === 0) {
+                showNotification('请先创建标签', 3000, 'error');
+                return;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'generateCodesOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">批量生成兑换码</h3>
+                        <div class="form-group">
+                            <label class="form-label">选择关联标签 *</label>
+                            <div class="redeem-tag-select-wrapper" id="generateTagSelectWrapper">
+                                <div class="redeem-tag-select-display">请选择标签</div>
+                                <svg class="redeem-tag-select-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/></svg>
+                                <div class="redeem-tag-select-options"></div>
+                                <input type="hidden" id="generateTagUid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">生成数量 * (1-1000)</label>
+                            <input type="number" class="form-input" id="generateCount" placeholder="输入生成数量" min="1" max="1000" value="10">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeGenerateCodesForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="generateCodes()">生成</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                initRedeemTagSelect('generateTagSelectWrapper', tags);
+            }, 100);
+        }
+
+        function closeGenerateCodesForm() {
+            const overlay = document.getElementById('generateCodesOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        function initRedeemTagSelect(wrapperId, tags) {
+            const wrapper = document.getElementById(wrapperId);
+            if (!wrapper || !tags || tags.length === 0) return;
+
+            const display = wrapper.querySelector('.redeem-tag-select-display');
+            const optionsContainer = wrapper.querySelector('.redeem-tag-select-options');
+            const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+
+            optionsContainer.innerHTML = tags.map(tag => `
+                <div class="redeem-tag-select-option" data-value="${tag.uid}" data-label="${tag.tagID}">
+                    ${tag.tagID} (uid: ${tag.uid})
+                </div>
+            `).join('');
+
+            display.addEventListener('click', () => {
+                wrapper.classList.toggle('active');
+            });
+
+            optionsContainer.addEventListener('click', (e) => {
+                const option = e.target.closest('.redeem-tag-select-option');
+                if (!option) return;
+
+                optionsContainer.querySelectorAll('.redeem-tag-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                display.textContent = option.dataset.label;
+                if (hiddenInput) {
+                    hiddenInput.value = option.dataset.value;
+                }
+                wrapper.classList.remove('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!wrapper.contains(e.target)) {
+                    wrapper.classList.remove('active');
+                }
+            });
+        }
+
+        async function generateCodes() {
+            const tagUid = document.getElementById('generateTagUid').value;
+            const count = parseInt(document.getElementById('generateCount').value, 10);
+
+            if (!tagUid) {
+                showNotification('请选择关联标签', 3000, 'error');
+                return;
+            }
+
+            if (!count || count < 1 || count > 1000) {
+                showNotification('生成数量必须在1-1000之间', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/redeem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'addCodes',
+                        uid: parseInt(userUid, 10),
+                        controlToken: controlKey,
+                        redeemTagUid: parseInt(tagUid, 10),
+                        count: count
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification(`成功生成 ${data.returnData.content.count} 个兑换码`, 3000, 'success');
+                    closeGenerateCodesForm();
+                    fetchRedeemCodes();
+                } else {
+                    showNotification(data.returnData.codeText || '生成失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to generate codes:', error);
+                showNotification('生成失败', 3000, 'error');
+            }
+        }
+
+        function showRedeemCodeForm() {
+            const overlay = document.createElement('div');
+            overlay.className = 'form-overlay active';
+            overlay.id = 'redeemCodeOverlay';
+            overlay.innerHTML = `
+                <div class="form-container">
+                    <div class="form-inner">
+                        <h3 class="form-title">兑换兑换码</h3>
+                        <div class="form-group">
+                            <label class="form-label">兑换码 *</label>
+                            <input type="text" class="form-input" id="redeemCodeInput" placeholder="格式: XXXXX-XXXXX-XXXXX-XXXXX">
+                        </div>
+                        <div class="form-buttons">
+                            <button class="form-btn form-btn-cancel" onclick="closeRedeemCodeForm()">取消</button>
+                            <button class="form-btn form-btn-primary" onclick="redeemCode()">兑换</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function closeRedeemCodeForm() {
+            const overlay = document.getElementById('redeemCodeOverlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function redeemCode() {
+            const code = document.getElementById('redeemCodeInput').value.trim();
+
+            if (!code) {
+                showNotification('请输入兑换码', 3000, 'error');
+                return;
+            }
+
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/redeem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'redeem',
+                        uid: parseInt(userUid, 10),
+                        controlToken: controlKey,
+                        code: code
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification(`兑换成功！已获得标签 (UID: ${data.returnData.content.tagUID})`, 3000, 'success');
+                    closeRedeemCodeForm();
+                    fetchRedeemCodes();
+                } else {
+                    showNotification(data.returnData.codeText || '兑换失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to redeem code:', error);
+                showNotification('兑换失败', 3000, 'error');
+            }
+        }
+
+        async function freezeCode(codeUid) {
+            showConfirm('确定要冻结此兑换码吗？', async () => {
+                try {
+                    const userUid = getCookie('userUid');
+                    const response = await fetch('https://account.838483.xyz/v6/redeem', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'freezeCodes',
+                            uid: parseInt(userUid, 10),
+                            controlToken: controlKey,
+                            codeUidList: [codeUid]
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.returnData.code === 200) {
+                        showNotification('兑换码已冻结', 3000, 'success');
+                        fetchRedeemCodes();
+                    } else {
+                        showNotification(data.returnData.codeText || '冻结失败', 3000, 'error');
+                    }
+                } catch (error) {
+                    console.error('Failed to freeze code:', error);
+                    showNotification('冻结失败', 3000, 'error');
+                }
+            });
+        }
+
+        async function unfreezeCode(codeUid) {
+            try {
+                const userUid = getCookie('userUid');
+                const response = await fetch('https://account.838483.xyz/v6/redeem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'unfreezeCodes',
+                        uid: parseInt(userUid, 10),
+                        controlToken: controlKey,
+                        codeUidList: [codeUid]
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.returnData.code === 200) {
+                    showNotification('兑换码已解冻', 3000, 'success');
+                    fetchRedeemCodes();
+                } else {
+                    showNotification(data.returnData.codeText || '解冻失败', 3000, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to unfreeze code:', error);
+                showNotification('解冻失败', 3000, 'error');
+            }
+        }
+
+        async function deleteCode(codeUid) {
+            showConfirm('确定要删除此兑换码吗？此操作无法撤销。', async () => {
+                try {
+                    const userUid = getCookie('userUid');
+                    const response = await fetch('https://account.838483.xyz/v6/redeem', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'deleteCodes',
+                            uid: parseInt(userUid, 10),
+                            controlToken: controlKey,
+                            codeUidList: [codeUid]
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.returnData.code === 200) {
+                        showNotification('兑换码已删除', 3000, 'success');
+                        fetchRedeemCodes();
+                    } else {
+                        showNotification(data.returnData.codeText || '删除失败', 3000, 'error');
+                    }
+                } catch (error) {
+                    console.error('Failed to delete code:', error);
+                    showNotification('删除失败', 3000, 'error');
+                }
+            });
         }
 
         let mailAddressInfo = null;
