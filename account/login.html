@@ -1549,7 +1549,14 @@
             const accountsStr = getCookie('quickLoginAccounts');
             if (accountsStr) {
                 try {
-                    return JSON.parse(decodeURIComponent(accountsStr));
+                    const accounts = JSON.parse(decodeURIComponent(accountsStr));
+                    const validAccounts = accounts.filter(a =>
+                        a && a.controlToken && a.uid && String(a.uid) !== 'undefined' && String(a.uid) !== ''
+                    );
+                    if (validAccounts.length !== accounts.length) {
+                        saveQuickLoginAccounts(validAccounts);
+                    }
+                    return validAccounts;
                 } catch (e) {
                     return [];
                 }
@@ -1692,28 +1699,20 @@
 
                     const accounts = getQuickLoginAccounts();
                     const existingIndex = accounts.findIndex(a => String(a.uid) === String(result.uid));
+                    const newEntry = {
+                        uid: result.uid,
+                        name: result.name,
+                        email: result.more?.email || account.email || '',
+                        controlToken: result.more?.controlToken || account.controlToken || '',
+                        certVersion: result.certVersion,
+                        sign: result.sign,
+                        appID: result.appID,
+                        more: result.more || {}
+                    };
                     if (existingIndex !== -1) {
-                        accounts[existingIndex] = {
-                            uid: result.uid,
-                            name: result.name,
-                            email: result.more?.email || '',
-                            controlToken: result.more?.controlToken || '',
-                            certVersion: result.certVersion,
-                            sign: result.sign,
-                            appID: result.appID,
-                            more: result.more || {}
-                        };
+                        accounts[existingIndex] = newEntry;
                     } else {
-                        accounts.push({
-                            uid: result.uid,
-                            name: result.name,
-                            email: result.more?.email || '',
-                            controlToken: result.more?.controlToken || '',
-                            certVersion: result.certVersion,
-                            sign: result.sign,
-                            appID: result.appID,
-                            more: result.more || {}
-                        });
+                        accounts.push(newEntry);
                     }
                     saveQuickLoginAccounts(accounts);
 
@@ -1813,32 +1812,27 @@
               const urlSafeCert = base64Cert.replace(/=+$/, '');
 
               if (currentAppID === 'dashboard' || result.appID === 'dashboard') {
-                const accounts = getQuickLoginAccounts();
-                const existingIndex = accounts.findIndex(a => String(a.uid) === String(result.uid));
-                if (existingIndex !== -1) {
-                  accounts[existingIndex] = {
-                    uid: result.uid,
-                    name: result.name,
-                    email: result.more?.email || '',
-                    controlToken: result.more?.controlToken || '',
-                    certVersion: result.certVersion,
-                    sign: result.sign,
-                    appID: result.appID,
-                    more: result.more || {}
-                  };
-                } else {
-                  accounts.push({
-                    uid: result.uid,
-                    name: result.name,
-                    email: result.more?.email || '',
-                    controlToken: result.more?.controlToken || '',
-                    certVersion: result.certVersion,
-                    sign: result.sign,
-                    appID: result.appID,
-                    more: result.more || {}
-                  });
+                const controlToken = result.more?.controlToken || '';
+                if (controlToken) {
+                    const accounts = getQuickLoginAccounts();
+                    const existingIndex = accounts.findIndex(a => String(a.uid) === String(result.uid));
+                    const newEntry = {
+                        uid: result.uid,
+                        name: result.name,
+                        email: result.more?.email || '',
+                        controlToken: controlToken,
+                        certVersion: result.certVersion,
+                        sign: result.sign,
+                        appID: result.appID,
+                        more: result.more || {}
+                    };
+                    if (existingIndex !== -1) {
+                      accounts[existingIndex] = newEntry;
+                    } else {
+                      accounts.push(newEntry);
+                    }
+                    saveQuickLoginAccounts(accounts);
                 }
-                saveQuickLoginAccounts(accounts);
               }
 
               showNotification(`登录成功！用户：${result.name}`, 1500, 'success');

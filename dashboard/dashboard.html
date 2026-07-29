@@ -3203,10 +3203,10 @@
                     <div class="feature-card" onclick="window.open('https://mail.838483.xyz/mail', '_blank')">
                         <div class="feature-card-header">
                             <div class="feature-card-icon">📧</div>
-                            <div class="feature-card-title">邮件通知</div>
+                            <div class="feature-card-title">邮件</div>
                         </div>
                         <div class="feature-card-divider"></div>
-                        <div class="feature-card-desc">接收账户安全相关的邮件通知</div>
+                        <div class="feature-card-desc">进入sungbly email</div>
                     </div>
                     <div class="feature-card" onclick="showNotification('存储服务正在制作中...', 3000, 'info')">
                         <div class="feature-card-header">
@@ -3420,7 +3420,14 @@
             const accountsStr = getCookie('quickLoginAccounts');
             if (accountsStr) {
                 try {
-                    return JSON.parse(decodeURIComponent(accountsStr));
+                    const accounts = JSON.parse(decodeURIComponent(accountsStr));
+                    const validAccounts = accounts.filter(a =>
+                        a && a.controlToken && a.uid && String(a.uid) !== 'undefined' && String(a.uid) !== ''
+                    );
+                    if (validAccounts.length !== accounts.length) {
+                        saveQuickLoginAccounts(validAccounts);
+                    }
+                    return validAccounts;
                 } catch (e) {
                     return [];
                 }
@@ -3445,6 +3452,10 @@
             const currentName = getCookie('userName');
             const currentEmail = getCookie('userEmail');
             const controlToken = getCookie('controlKey');
+
+            if (!controlToken || !currentUid || String(currentUid) === 'undefined' || String(currentUid) === '') {
+                return;
+            }
 
             let accounts = getQuickLoginAccounts();
             const existingIndex = accounts.findIndex(a => String(a.uid) === String(currentUid));
