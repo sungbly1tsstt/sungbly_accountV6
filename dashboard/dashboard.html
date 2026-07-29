@@ -5676,7 +5676,36 @@
             loadSavedTheme();
             initCustomSelects();
 
-            controlKey = getCookie('controlKey');
+            const urlParams = new URLSearchParams(window.location.search);
+            const certParam = urlParams.get('cert');
+            if (certParam) {
+                try {
+                    let paddedCert = certParam;
+                    while (paddedCert.length % 4 !== 0) {
+                        paddedCert += '=';
+                    }
+                    const certText = decodeURIComponent(escape(atob(paddedCert)));
+                    const cert = JSON.parse(certText);
+                    if (cert.uid) {
+                        const controlToken = cert.more?.controlToken || '';
+                        const email = cert.more?.email || '';
+                        setCookie('userUid', cert.uid, 30);
+                        setCookie('userName', cert.name || '', 30);
+                        if (email) setCookie('userEmail', email, 30);
+                        if (controlToken) setCookie('controlKey', controlToken, 30);
+                        if (controlToken) controlKey = controlToken;
+                        ensureCurrentAccountInQuickLogin();
+                        const cleanUrl = window.location.pathname + window.location.hash;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    }
+                } catch (e) {
+                    console.error('Failed to parse cert:', e);
+                }
+            }
+
+            if (!controlKey) {
+                controlKey = getCookie('controlKey');
+            }
             if (!controlKey) {
                 window.location.href = '../account/login.html?appID=dashboard';
                 return;

@@ -1688,6 +1688,7 @@
 
                     const certText = JSON.stringify(certObject);
                     const base64Cert = btoa(unescape(encodeURIComponent(certText)));
+                    const urlSafeCert = base64Cert.replace(/=+$/, '');
 
                     const accounts = getQuickLoginAccounts();
                     const existingIndex = accounts.findIndex(a => String(a.uid) === String(result.uid));
@@ -1730,13 +1731,13 @@
                                 }
                             }
                             const url = new URL(rawUrl);
-                            url.searchParams.set('cert', base64Cert);
+                            url.searchParams.set('cert', urlSafeCert);
                             callbackUrl = url.toString();
                         } catch (e) {
                             console.error('Invalid URL, fallback to manual concat', e);
                             let cleanUrl = appCallbackUrl.replace(/\?$/, '');
                             const separator = cleanUrl.includes('?') ? '&' : '?';
-                            callbackUrl = `${cleanUrl}${separator}cert=${encodeURIComponent(base64Cert)}`;
+                            callbackUrl = `${cleanUrl}${separator}cert=${urlSafeCert}`;
                         }
 
                         setTimeout(() => {
@@ -1809,6 +1810,7 @@
 
               const certText = JSON.stringify(certObject);
               const base64Cert = btoa(unescape(encodeURIComponent(certText)));
+              const urlSafeCert = base64Cert.replace(/=+$/, '');
 
               if (currentAppID === 'dashboard' || result.appID === 'dashboard') {
                 const accounts = getQuickLoginAccounts();
@@ -1855,16 +1857,14 @@
                             rawUrl = 'https://' + rawUrl;         // example.com → https://example.com
                         }
                     } try {
-                        // 2. 使用 URL API 安全添加参数（自动处理 ? 和 &，避免双问号）
                         const url = new URL(rawUrl);
-                        url.searchParams.set('cert', base64Cert); // 会自动编码
+                        url.searchParams.set('cert', urlSafeCert);
                         callbackUrl = url.toString();
                     } catch (e) {
-                        // 容错：如果 URL 解析失败（极少见），回退到手动拼接
                         console.error('Invalid URL, fallback to manual concat', e);
                         let cleanUrl = appCallbackUrl.replace(/\?$/, '');
                         const separator = cleanUrl.includes('?') ? '&' : '?';
-                        callbackUrl = `${cleanUrl}${separator}cert=${encodeURIComponent(base64Cert)}`;
+                        callbackUrl = `${cleanUrl}${separator}cert=${urlSafeCert}`;
                     }
 
                     // 3. 延迟跳转（与原逻辑一致）
