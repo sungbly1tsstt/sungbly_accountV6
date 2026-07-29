@@ -1,2 +1,4 @@
 .trae
 workers
+.vscode/settings.json
+.gitignore

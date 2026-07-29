@@ -1207,7 +1207,7 @@
             </div>
 
             <div id="quick-login-form" class="quick-mode hidden">
-                <div class="logo-title">一键登录</div>
+                <div class="logo-title">快速登录</div>
                 <div class="account-list-container">
                     <div class="account-list" id="quickLoginAccountList">
                     </div>
@@ -1229,7 +1229,7 @@
             <div class="bottom-bar">
                 <div class="bottom-left">
                     <button class="link-btn" id="feedback-btn">反馈</button>
-                    <button class="link-btn" id="quick-login-toggle">一键登录</button>
+                    <button class="link-btn" id="quick-login-toggle">快速登录</button>
                 </div>
                 <div class="bottom-right">
                     <a href="#" id="register-link" class="link-btn">没有账号？注册<i>→</i></a>
@@ -1600,7 +1600,7 @@
             event.stopPropagation();
             const overlay = document.getElementById('confirmOverlay');
             const messageEl = document.getElementById('confirmMessage');
-            messageEl.textContent = `确定要将账户 "${name}" 移出一键登录吗？`;
+            messageEl.textContent = `确定要将账户 "${name}" 移出快速登录吗？`;
             confirmCallback = () => deleteQuickLoginAccount(uid);
             overlay.classList.add('active');
         }
@@ -1620,7 +1620,7 @@
 
         function deleteQuickLoginAccount(uid) {
             let accounts = getQuickLoginAccounts();
-            accounts = accounts.filter(a => a.uid !== uid);
+            accounts = accounts.filter(a => String(a.uid) !== String(uid));
             saveQuickLoginAccounts(accounts);
             renderQuickLoginAccounts();
             showNotification('账户已移除', 3000, 'success');
@@ -1635,7 +1635,7 @@
             }
 
             const accounts = getQuickLoginAccounts();
-            const account = accounts.find(a => a.uid === selectedAccountId);
+            const account = accounts.find(a => String(a.uid) === String(selectedAccountId));
 
             if (!account) {
                 showNotification('账户不存在', 3000, 'error');
@@ -1690,7 +1690,7 @@
                     const base64Cert = btoa(unescape(encodeURIComponent(certText)));
 
                     const accounts = getQuickLoginAccounts();
-                    const existingIndex = accounts.findIndex(a => a.uid === result.uid);
+                    const existingIndex = accounts.findIndex(a => String(a.uid) === String(result.uid));
                     if (existingIndex !== -1) {
                         accounts[existingIndex] = {
                             uid: result.uid,
@@ -1812,7 +1812,7 @@
 
               if (currentAppID === 'dashboard' || result.appID === 'dashboard') {
                 const accounts = getQuickLoginAccounts();
-                const existingIndex = accounts.findIndex(a => a.uid === result.uid);
+                const existingIndex = accounts.findIndex(a => String(a.uid) === String(result.uid));
                 if (existingIndex !== -1) {
                   accounts[existingIndex] = {
                     uid: result.uid,
